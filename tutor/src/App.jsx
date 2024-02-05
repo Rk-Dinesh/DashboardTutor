@@ -24,6 +24,7 @@ import CategoryForm from "./pages/Category/CategoryForm";
 import PlanForm from "./pages/SubscriptionPlan/Planform";
 import Plan from "./pages/SubscriptionPlan";
 import Subscribers from "./pages/Subscribers";
+import Razorpay from "./pages/Razorpay/Razorpay";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
       <ToastContainer position="top-right" autoClose={1000} />
       <Routes>
         <Route path="" element={<Login setToken={setToken} />} />
+        <Route path="/razorpay" element={<Razorpay />}/>
         {/* <Route path="" element={<SignInSide setToken={setToken} />} /> */}
         <Route path="/*" element={token ? <Layout token={token}/> : <Navigate to='/' />}>
           <Route path="dashboard" element={<Dashboard />} />

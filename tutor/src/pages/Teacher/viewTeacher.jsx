@@ -12,7 +12,7 @@ const Teachers = () => {
     const tutor_ids = params.get("tutor_id");
 
 
-    const Teachers = { tutor_id: ' ', fname: " ", laname: ' ', gender: ' ', email: ' ', phone: ' ', address: ' ', state: ' ', postcode: " ", subject: ' ', Experience: ' ', qualification: ' ', bio: ' ', verification: " " }
+    const Teachers = { tutor_id: ' ', fname: " ", laname: ' ', gender: ' ', email: ' ', phone: ' ', address: ' ', state: ' ', postcode: " ", subject: ' ', experience: ' ', qualification: ' ', bio: ' ', verification: " " }
     //const [tutor,setTutor] = useState(Teachers)
     const [tutor, setTutor] = useState([])
 
@@ -177,7 +177,7 @@ const Teachers = () => {
                                         Gender
                                     </div>
                                     <div className="text-base text-slate-900 dark:text-slate-300 font-medium mb-1">
-                                        {tutor?.gender || "N/A"}
+                                        {tutor?.email || "N/A"}
                                     </div>
                                 </div>
 
@@ -282,7 +282,7 @@ const Teachers = () => {
                                                     Experience
                                                 </div>
                                                 <div className="text-base text-slate-600 dark:text-slate-50">
-                                                    {tutor?.Experience || "N/A"}
+                                                    {tutor?.experience || "N/A"}
                                                 </div>
                                             </div>
                                         </div>

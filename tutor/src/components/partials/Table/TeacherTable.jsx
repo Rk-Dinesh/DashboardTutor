@@ -166,7 +166,7 @@ const TeacherTable = () => {
                                 <td className="table-td">{row.original.subject}</td>
                                 <td className="table-td">{row.original.gender}</td>
                                 <td className="table-td">{row.original.qualification}</td>
-                                <td className="table-td">{row.original.Experience}</td>
+                                <td className="table-td">{row.original.experience}</td>
                                 <td className="table-td">{row.original.phone}</td>
                                 <td className="table-td">{row.original.email}</td>
                                 <td className="table-td">
