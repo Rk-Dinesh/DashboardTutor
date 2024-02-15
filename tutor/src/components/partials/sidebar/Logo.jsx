@@ -4,8 +4,7 @@ import useDarkMode from "../../../hooks/useDarkMode";
 import useSidebar from "../../../hooks/useSidebar";
 import useSemiDark from "../../../hooks/useSemiDark";
 import useSkin from "../../../hooks/useSkin";
-
-
+import MobileLogo from "../../../assets/Protutor_Logo.png";
 
 const SidebarLogo = ({ menuHover }) => {
   const [isDark] = useDarkMode();
@@ -18,25 +17,37 @@ const SidebarLogo = ({ menuHover }) => {
     <div
       className={` logo-segment flex justify-between items-center bg-white dark:bg-slate-800 z-[9] py-6  px-4 
       ${menuHover ? "logo-hovered" : ""}
-      ${skin === "bordered"
+      ${
+        skin === "bordered"
           ? " border-b border-r-0 border-slate-200 dark:border-slate-700"
           : " border-none"
-        }      
+      }      
       `}
     >
       <Link to="/dashboard">
         <div className="flex items-center space-x-4">
+          <div className="logo-icon">
+            {!isDark && !isSemiDark ? (
+              <img
+                src={MobileLogo}
+                alt=""
+                style={{ height: "100", width: "60px" }}
+              />
+            ) : (
+              <img src={MobileLogo} alt="" />
+            )}
+          </div>
 
           {(!collapsed || menuHover) && (
             <div>
               <p className="text-dark-600">
-                <b>Tutor Finder </b>
+                <b>Pro Tutor </b>
               </p>
             </div>
           )}
         </div>
       </Link>
-{/* 
+      {/* 
       {(!collapsed || menuHover) && (
         <div
           onClick={() => setMenuCollapsed(!collapsed)}

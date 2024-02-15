@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { API } from "../../../../host";
+import { Icon } from "@iconify/react";
 
 const UserProfile = ({ token }) => {
 
@@ -90,84 +91,76 @@ const UserProfile = ({ token }) => {
 
   return (
     <div>
-      <div className="flex justify-between flex-wrap items-center mb-6">
-        <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
-          User Profile
-        </h4>
-      </div>
-      <div>
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6">
-            <Card>
-              <div className="bg-transparent">
-                <form className="space-y-3" >
-                  <div >
-                    <label htmlFor="userid" className="col-sm-2 col-form-label"><b>Userid </b></label>
-                    <input
-                      type="text"
-                      name="userid"
-                      className=" col-sm-10 py-2 "
-                      id="userid"
-                      placeholder="User ID"
-                      value={`: ${userData.userid}`}
-                      readOnly
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="firstname" className="col-sm-2 col-form-label"><b>First Name </b></label>
-                    <input
-                      type="text"
-                      name="firstname"
-                      id="firstname"
-                      className=" col-sm-10 py-2"
-                      placeholder="First Name"
-                      value={`: ${userData.fname}`}
-                      readOnly
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="lastname" className="col-sm-2 col-form-label"><b>Last Name </b></label>
-                    <input
-                      type="text"
-                      name="lastname"
-                      id="lastname"
-                      className=" col-sm-10 py-2"
-                      placeholder="Last Name"
-                      value={`: ${userData.lname}`}
-                      readOnly
-                    />
-                  </div>
-                  <div className="form-group row">
-                    <label htmlFor="email" className="col-sm-2 col-form-label"><b>Email </b></label>
-                    <input
-                      type="text"
-                      name="email"
-                      id="email"
-                      className="col-sm-10 py-2"
-                      placeholder="Email"
-                      value={`: ${userData.email}`}
-                      readOnly
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="phone" className="col-sm-2 col-form-label"><b>Phone </b></label>
-                    <input
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      className=" col-sm-10  py-2"
-                      placeholder="Phone"
-                      value={`: ${userData.phone}`}
-                      readOnly
-                    />
-                  </div>
-                </form>
+    <div className="grid grid-cols-12 gap-6">
+      <div className="lg:col-span-12 col-span-12">
+        <Card title="User Info">
+          <div className="  flex justify-around">
+            <div className="flex space-x-3 rtl:space-x-reverse">
+              <div className="flex-none text-2xl text-slate-600 dark:text-slate-300">
+                <Icon icon="heroicons:user" />
               </div>
-            </Card>
+              <div className="flex-1">
+                <div className="uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]">
+                  UserID
+                </div>
+                <div className="text-base text-slate-600 dark:text-slate-50">
+                  {userData.userid || "N/A"}
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-3 rtl:space-x-reverse">
+              <div className="flex-none text-2xl text-slate-600 dark:text-slate-300">
+                <Icon icon="heroicons:users" />
+              </div>
+              <div className="flex-1">
+                <div className="uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]">
+                  Name
+                </div>
+                <div className="text-base text-slate-600 dark:text-slate-50">
+                  {`${userData.fname} ${userData.lname}` || "N/A"}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 rtl:space-x-reverse">
+              <div className="flex-none text-2xl text-slate-600 dark:text-slate-300">
+                <Icon icon="heroicons:envelope" />
+              </div>
+              <div className="flex-1">
+                <div className="uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]">
+                  Email
+                </div>
+                <a
+                  href="mailto:someone@example.com"
+                  className="text-base text-slate-600 dark:text-slate-50"
+                >
+                  {userData.email || "N/A"}
+                </a>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 rtl:space-x-reverse">
+              <div className="flex-none text-2xl text-slate-600 dark:text-slate-300">
+                <Icon icon="heroicons:phone-arrow-up-right" />
+              </div>
+              <div className="flex-1">
+                <div className="uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]">
+                  PHONE
+                </div>
+                <a
+                  href="tel:0189749676767"
+                  className="text-base text-slate-600 dark:text-slate-50"
+                >
+                  {userData.phone || "N/A"}
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
+    <br />
+  </div>
 
   );
 
