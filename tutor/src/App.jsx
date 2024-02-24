@@ -25,6 +25,7 @@ import PlanForm from "./pages/SubscriptionPlan/Planform";
 import Plan from "./pages/SubscriptionPlan";
 import Subscribers from "./pages/Subscribers";
 import Razorpay from "./pages/Razorpay/Razorpay";
+import Invoice from "./pages/Razorpay/invoice";
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           <Route path="category_form" element={<CategoryForm />} />
           <Route path="plan_form" element={<PlanForm />} />
           <Route path="updateform" element={<UpdateForm />} />
+          <Route path="invoice" element={<Invoice />} />
           <Route path="profile" element={<UserProfile token={token} />} />
         </Route>
       </Routes>
