@@ -36,12 +36,12 @@ const Layout = ({token}) => {
   return (
     <>
       <ToastContainer />
-      <Header className={width > breakpoints.xl ? switchHeaderClass() : ""} token={token}/>
-      {menuType === "vertical" && width > breakpoints.xl && !menuHidden && (
+      <Header className={width > breakpoints.lg ? switchHeaderClass() : ""} token={token}/>
+      {menuType === "vertical" && width > breakpoints.lg && !menuHidden && (
         <Sidebar />
       )}
       <div
-        className={`content-wrapper transition-all duration-150 ${width > 1280 ? switchHeaderClass() : ""
+        className={`content-wrapper transition-all duration-150 ${width > 1024 ? switchHeaderClass() : ""
           }`}
       >
         {/* md:min-h-screen will h-full*/}

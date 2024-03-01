@@ -3,6 +3,7 @@ import logo from "../../assets/Protutor_Logo.png";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
+import "./invoice.css";
 
 function Invoice() {
   const location = useLocation();
@@ -10,6 +11,76 @@ function Invoice() {
   const Id = new URLSearchParams(location.search).get("sub_id");
   console.log(Id, "ide req");
   const [userData, setUserData] = useState([]);
+
+  function convertNumberToWords(number) {
+    const ones = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+    ];
+    const teens = [
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+    const tens = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+
+    if (number === 0) return "zero";
+    if (number < 10) return ones[number];
+    if (number < 20) return teens[number - 10];
+    if (number < 100)
+      return (
+        tens[Math.floor(number / 10)] +
+        (number % 10 !== 0 ? " " + ones[number % 10] : "")
+      );
+    if (number < 1000)
+      return (
+        ones[Math.floor(number / 100)] +
+        " hundred" +
+        (number % 100 !== 0 ? " " + convertNumberToWords(number % 100) : "")
+      );
+    if (number < 1000000)
+      return (
+        convertNumberToWords(Math.floor(number / 1000)) +
+        " thousand" +
+        (number % 1000 !== 0 ? " " + convertNumberToWords(number % 1000) : "")
+      );
+    if (number < 1000000000)
+      return (
+        convertNumberToWords(Math.floor(number / 1000000)) +
+        " million" +
+        (number % 1000000 !== 0
+          ? " " + convertNumberToWords(number % 1000000)
+          : "")
+      );
+    return "number too large";
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -47,154 +118,185 @@ function Invoice() {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Invoice",
+    
   });
 
   return (
-    <section id="invoice">
-      <div className="container mx-auto sm:px-4 my-1 py-2" ref={componentRef}>
-        <div className="text-center">
-          <img
-            src={logo}
-            alt="Logo"
-            className="block mx-auto"
-            style={{
-              width: "240px",
-              marginBottom: "-30px",
-            }}
-          />
-        </div>
-        <div className="text-center border-t border-b my-1 py-1">
-          <h4 className="display-7 fw-bold">Invoice V1 </h4>
-          <p className="m-0">Invoice No: 12345</p>
-          <p className="m-0">Invoice Date: {userData.date}</p>
-        </div>
-        <div className="md:flex justify-between py-2">
-          <div>
-            <p className="text-primary-500 py-1">Invoice To</p>
-            <h4>Roger Y. Will</h4>
-            <ul className="list-unstyled">
-              <li>XYZ Company</li>
-              <li>info@xyzcompany.com</li>
-              <li>123 Main Street</li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-primary-500 py-1">Invoice From</p>
-            <h4>{userData.fname}</h4>
-            <ul className="list-unstyled">
-              <li>ABC Company</li>
-              <li>email</li>
-              <li>456 Main Street</li>
-            </ul>
-          </div>
-        </div>
-        <table className="w-full max-w-full mb-4 bg-transparent border my-5">
-          <thead>
-            <tr className="bg-primary-subtle">
-              <th scope="col">No.</th>
-              <th scope="col">Subscription Plan</th>
-              <th scope="col">Tnx Id</th>
-              <th scope="col">Credits</th>
-              <th scope="col">Amount</th>
-            </tr>
-          </thead>
+    
+    <>
+      <div className="invoice-box" ref={componentRef}>
+        <table cellPadding={0} cellSpacing={0}>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>{userData.plan_name} Plan</td>
-              <td>{userData.tnx_id}</td>
-              <td>{userData.count}</td>
-              <td> ${userData.plancost}</td>
+            <tr className="top_rw">
+              <td colSpan={2}>
+                <h4 style={{ marginBottom: 0 }}>
+                  Purchase invoice/Bill of Supply
+                </h4>
+                <span>Number: 27B00032991LQ354 Date: {userData.date}</span>
+              </td>
+              <td style={{ width: "30%", marginRight: 10 }}>
+                Order Id: {userData.tnx_id}
+              </td>
+            </tr>
+            <tr className="top">
+              <td colSpan={3}>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <b>Sold By: Pro Tutor</b>
+                        <br />
+                        Delhivery Pvt. Ltd. Plot No. A5 Indian Corporation
+                        <br />
+                        Warehouse Park Village Dive-anjur, Bhiwandi, Off
+                        <br />
+                        Nh-3, Near Mankoli Naka, District Thane, Pin Code :
+                        421302
+                        <br />
+                        Mumbai, Maharashtra - 421302
+                        <br />
+                        PAN: AALFN0535C
+                        <br />
+                        GSTIN: 27AALFN0535C1ZK
+                        <br />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr className="information">
+              <td colSpan={3}>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td colSpan={2}>
+                        <b>Invoice From: w3learnpoint</b>
+                        <br />
+                        Kokar, Ranchi
+                        <br />
+                        +0651-908-090-009
+                        <br />
+                        info@w3learnpoint.com
+                        <br />
+                        www.w3learnpoint.com
+                      </td>
+                      <td>
+                        <b>Invoice To: {userData.fname}</b>
+                        <br />
+                        Acme Corp.
+                        <br />
+                        John Doe
+                        <br />${"{"}email{"}"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
             </tr>
             <tr>
-              <th />
-              <td />
-              <td />
-              <td className="">TAX 20%</td>
-              <td>$3.00</td>
+              <td colSpan={3}>
+                <table cellSpacing="0px" cellPadding="2px">
+                  <tbody>
+                    <tr className="heading">
+                      <td style={{ width: "25%" }}>SUBSCRIPTION PLAN</td>
+                      <td style={{ width: "10%", textAlign: "center" }}>
+                        CREDITS
+                      </td>
+                      <td style={{ width: "10%", textAlign: "right" }}>
+                        TNX ID
+                      </td>
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        PRICE
+                      </td>
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        TOTAL AMOUNT
+                      </td>
+                    </tr>
+                    <tr className="item">
+                      <td style={{ width: "25%" }}>
+                        {userData.plan_name} plan
+                      </td>
+                      <td style={{ width: "10%", textAlign: "center" }}>
+                        {userData.count}
+                      </td>
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        {userData.tnx_id}
+                      </td>
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        $ {userData.plancost}
+                      </td>
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        $ {userData.plancost}
+                      </td>
+                    </tr>
+                    <tr className="item">
+                      <td style={{ width: "25%" }}>
+                        <b>Grand Total</b>
+                      </td>
+                      <td style={{ width: "10%", textAlign: "center" }}>
+                        {userData.count}
+                      </td>
+                      <td style={{ width: "10%", textAlign: "right" }} />
+                      <td style={{ width: "15%", textAlign: "right" }} />
+                      <td style={{ width: "15%", textAlign: "right" }}>
+                        <b>$ {userData.plancost}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr className="total">
+              <td colSpan={3} align="right">
+                Total Amount in Words:{" "}
+                <b>{convertNumberToWords(userData.plancost)} dollars Only</b>
+              </td>
             </tr>
             <tr>
-              <th />
-              <td />
-              <td />
-              <td className="text-dark-700 fw-bold">Grand-Total</td>
-              <td className="text-dark-700 fw-bold">${userData.plancost}</td>
+              <td colSpan={3}>
+                <table cellSpacing="0px" cellPadding="2px">
+                  <tbody>
+                    <tr>
+                      <td width="50%">
+                        <b>Declaration:</b>
+                        <br />
+                        We declare that this invoice shows the actual price of
+                        the goods described above and that all particulars are
+                        true and correct. The goods sold are intended for end
+                        user consumption and not for resale.
+                      </td>
+                      <td>
+                        * This is a computer generated invoice and does not
+                        require a physical signature
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="50%" />
+                      <td>
+                        <b>Authorized Signature</b>
+                        <br />
+                        <br />
+                        ...................................
+                        <br />
+                        <br />
+                        <br />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
             </tr>
           </tbody>
         </table>
-        {/* <div className="md:flex justify-between my-2">
-          <div>
-            <h5 className="fw-bold my-1">Contact Us</h5>
-            <ul className="list-unstyled">
-              <li className="flex justify-between ">
-                <Icon
-                  className="social-icon text-gray-900 fs-5 me-2"
-                  icon="mdi:location"
-                  style={{ verticalAlign: "text-bottom" }}
-                />{" "}
-                30 E Lake St, Chicago, USA
-              </li>
-              <li className="flex justify-between">
-                <Icon
-                  className="social-icon text-gray-900 fs-5 me-2"
-                  icon="solar:phone-bold"
-                  style={{ verticalAlign: "text-bottom" }}
-                />
-                <p >(510) 710-3464</p>
-              </li>
-              <li className="flex justify-between">
-                <Icon
-                  className="social-icon text-gray-900 fs-5 me-2"
-                  icon="ic:baseline-email"
-                  style={{ verticalAlign: "text-bottom" }}
-                />
-                <p>info@worldcourse.com</p>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h5 className="fw-bold my-2">Payment Info</h5>
-            <ul className="list-unstyled">
-              <li>
-                <span className="fw-semibold">Account No: </span> 102 3345 56938
-              </li>
-              <li>
-                <span className="fw-semibold">Account Name: </span> William
-                Peter
-              </li>
-              <li>
-                <span className="fw-semibold">Branch Name: </span> XYZ{" "}
-              </li>
-            </ul>
-          </div>
-        </div> */}
-        {/* <div className="text-center my-5">
-          <p className="text-gray-700">
-            <span className="fw-semibold">NOTICE: </span> A finance charge of
-            1.5% will be made on unpaid balances after 30 days.
-          </p>
-        </div> */}
-        <div id="footer-bottom">
-          <div className="container mx-auto sm:px-4 border-t">
-            <div className="flex flex-wrap  mt-3">
-              <div className="md:w-full pr-4 pl-4 copyright">
-                <p>
-                  © 2024 Invoice.{" "}
-                  <a
-                    href="#"
-                    target="_blank"
-                    className="text-decoration-none text-black-50"
-                  >
-                    Terms &amp; Conditions
-                  </a>{" "}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <button onClick={handlePrint}>Print Invoice</button>
-    </section>
+      <br />
+      <div className="ltr:text-right rtl:text-left">
+        <button className="btn btn-dark text-center" onClick={handlePrint}>
+          Print Invoice
+        </button>
+      </div>
+    </>
   );
 }
 

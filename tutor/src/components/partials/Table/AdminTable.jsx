@@ -12,7 +12,6 @@ import GlobalFilter from "./GlobalFilter";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../../host";
 
-
 const COLUMNS = [
   {
     Header: "#",
@@ -43,7 +42,6 @@ const COLUMNS = [
 const AdminTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     fetchData();
@@ -70,7 +68,9 @@ const AdminTable = () => {
 
   const handleDelete = async (userid) => {
     try {
-      const response = await axios.delete(`${API}/deleteadmin?userid=${userid}`);
+      const response = await axios.delete(
+        `${API}/deleteadmin?userid=${userid}`
+      );
       console.log(response);
       window.location.reload();
     } catch (error) {
@@ -78,14 +78,11 @@ const AdminTable = () => {
     }
   };
 
-
-
-
   const tableInstance = useTable(
     {
       columns: COLUMNS,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 }, // Initial page settings
+      initialState: { pageIndex: 0, pageSize: 5 }, // Initial page settings
     },
     useGlobalFilter,
     useSortBy,
@@ -112,6 +109,7 @@ const AdminTable = () => {
   } = tableInstance;
 
   const { globalFilter, pageIndex, pageSize } = state;
+  const range = 1;
 
   return (
     <>
@@ -139,67 +137,82 @@ const AdminTable = () => {
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
         </div>
       </div>
-      <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
-        <thead className="bg-slate-200 dark:bg-slate-700">
-          <tr>
-            <th className=" table-th " >#</th>
-            <th className=" table-th " >USER ID</th>
-            <th className=" table-th " >FIRST NAME</th>
-            <th className=" table-th " >LAST NAME</th>
-            <th className=" table-th " >EMAIL</th>
-            <th className=" table-th " >PHONE</th>
-            <th className=" table-th " >ROLE</th>
-            <th className=" table-th " >ACTION</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={row.original.userid}>
-                <td className="table-td">{row.original.rowIndex}</td>
-                <td className="table-td">{row.original.userid}</td>
-                <td className="table-td">{row.original.fname}</td>
-                <td className="table-td">{row.original.lname}</td>
-                <td className="table-td">{row.original.email}</td>
-                <td className="table-td">{row.original.phone}</td>
-                <td className="table-td">{row.original.role}</td>
-                <td className="table-td">
-                  <div className="d-flex justify-around rtl-space-x-reverse">
-                    <Tooltip content="Update" placement="top" arrow animation="shift-away">
-                      <Link to={`/updateform?userid=${row.original.userid}`}  className="action-btn">
-                        <Icon icon="heroicons:pencil-square" />
-                      </Link>
-                    </Tooltip>
-                    <Tooltip
-                      content="Delete"
-                      placement="top"
-                      arrow
-                      animation="shift-away"
-                      theme="danger"
-                    >
-                      <button
-                        className="action-btn"
-                        type="button"
-                        onClick={() => handleDelete(row.original.userid)}
-                      >
-                        <Icon icon="heroicons:trash" />
-                      </button>
-                    </Tooltip>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto -mx-6">
+        <div className="inline-block min-w-full align-middle">
+          <div className="overflow-hidden ">
+            <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+              <thead className="bg-slate-200 dark:bg-slate-700">
+                <tr>
+                  <th className=" table-th ">#</th>
+                  <th className=" table-th ">USER ID</th>
+                  <th className=" table-th ">FIRST NAME</th>
+                  <th className=" table-th ">LAST NAME</th>
+                  <th className=" table-th ">EMAIL</th>
+                  <th className=" table-th ">PHONE</th>
+                  <th className=" table-th ">ROLE</th>
+                  <th className=" table-th ">ACTION</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()} key={row.original.userid}>
+                      <td className="table-td">{row.original.rowIndex}</td>
+                      <td className="table-td">{row.original.userid}</td>
+                      <td className="table-td">{row.original.fname}</td>
+                      <td className="table-td">{row.original.lname}</td>
+                      <td className="table-td">{row.original.email}</td>
+                      <td className="table-td">{row.original.phone}</td>
+                      <td className="table-td">{row.original.role}</td>
+                      <td className="table-td">
+                        <div className="d-flex justify-around rtl-space-x-reverse">
+                          <Tooltip
+                            content="Update"
+                            placement="top"
+                            arrow
+                            animation="shift-away"
+                          >
+                            <Link
+                              to={`/updateform?userid=${row.original.userid}`}
+                              className="action-btn"
+                            >
+                              <Icon icon="heroicons:pencil-square" />
+                            </Link>
+                          </Tooltip>
+                          <Tooltip
+                            content="Delete"
+                            placement="top"
+                            arrow
+                            animation="shift-away"
+                            theme="danger"
+                          >
+                            <button
+                              className="action-btn"
+                              type="button"
+                              onClick={() => handleDelete(row.original.userid)}
+                            >
+                              <Icon icon="heroicons:trash" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">
         <div className=" flex items-center space-x-3 rtl:space-x-reverse"></div>
-        <ul className="flex items-center space-x-3 rtl:space-x-reverse">
+        <ul className="flex items-center  space-x-3  rtl:space-x-reverse">
           <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
             <button
-              className={` ${!canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={` ${
+                !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => gotoPage(0)}
               disabled={!canPreviousPage}
             >
@@ -208,33 +221,44 @@ const AdminTable = () => {
           </li>
           <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
             <button
-              className={` ${!canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={` ${
+                !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => previousPage()}
               disabled={!canPreviousPage}
             >
               Prev
             </button>
           </li>
-          {pageOptions.map((page, pageIdx) => (
-            <li key={pageIdx}>
-              <button
-                href="#"
-                aria-current="page"
-                className={`${pageIdx === pageIndex
-                  ? "bg-slate-900 dark:bg-slate-600  dark:text-slate-200 text-white font-medium "
-                  : "bg-slate-100 dark:bg-slate-700 dark:text-slate-400 text-slate-900  font-normal  "
-                  } text-sm rounded leading-[16px] flex h-6 w-6 items-center justify-center transition-all duration-150`}
-                onClick={() => gotoPage(pageIdx)}
-              >
-                {page + 1}
-              </button>
-            </li>
-          ))}
+          {pageOptions.map((page, pageIdx) => {
+            if (
+              pageIdx === pageIndex ||
+              (pageIdx >= pageIndex - range && pageIdx <= pageIndex + range)
+            ) {
+              return (
+                <li key={pageIdx}>
+                  <button
+                    href="#"
+                    aria-current="page"
+                    className={`${
+                      pageIdx === pageIndex
+                        ? "bg-slate-900 dark:bg-slate-600  dark:text-slate-200 text-white font-medium"
+                        : "bg-slate-100 dark:bg-slate-700 dark:text-slate-400 text-slate-900  font-normal"
+                    } text-sm rounded leading-[16px] flex h-6 w-6 items-center justify-center transition-all duration-150`}
+                    onClick={() => gotoPage(pageIdx)}
+                  >
+                    {page + 1}
+                  </button>
+                </li>
+              );
+            }
+            return null;
+          })}
           <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
             <button
-              className={` ${!canNextPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={` ${
+                !canNextPage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => nextPage()}
               disabled={!canNextPage}
             >
@@ -245,15 +269,15 @@ const AdminTable = () => {
             <button
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
-              className={` ${!canNextPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={` ${
+                !canNextPage ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               <Icon icon="heroicons:chevron-double-right-solid" />
             </button>
           </li>
         </ul>
       </div>
-
     </>
   );
 };

@@ -138,7 +138,10 @@ const UserTable = () => {
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
         </div>
       </div>
-      <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+      <div className="overflow-x-auto -mx-6">
+  <div className="inline-block min-w-full align-middle">
+    <div className="overflow-hidden ">
+    <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
         <thead className="bg-slate-200 dark:bg-slate-700">
           <tr>
             <th className=" table-th " >#</th>
@@ -194,6 +197,9 @@ const UserTable = () => {
           })}
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
       <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">
         <div className=" flex items-center space-x-3 rtl:space-x-reverse"></div>
         <ul className="flex items-center space-x-3 rtl:space-x-reverse">
