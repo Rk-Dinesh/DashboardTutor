@@ -3,6 +3,8 @@ import Card from "../../components/ui/Card";
 import HomeAdmin from "./HomeAdmin";
 import AdminDetails from "../../components/partials/Table/react-table-Admin";
 
+
+
 const Admin = () => {
 
   return (
