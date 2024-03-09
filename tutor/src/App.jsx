@@ -28,6 +28,7 @@ import Razorpay from "./pages/Razorpay/Razorpay";
 import Invoice from "./pages/Razorpay/invoice";
 
 
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="updateform" element={<UpdateForm />} />
           <Route path="invoice" element={<Invoice />} />
           <Route path="profile" element={<UserProfile token={token} />} />
+
         </Route>
       </Routes>
     </div>

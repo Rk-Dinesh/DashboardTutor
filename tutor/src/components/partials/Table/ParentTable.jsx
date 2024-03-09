@@ -42,10 +42,11 @@ const COLUMNS = [
 const ParentTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   const fetchData = async () => {
     try {
@@ -72,7 +73,7 @@ const ParentTable = () => {
         `${API}/parentDelete?parent_id=${parent_id}`
       );
       console.log(response);
-      window.location.reload();
+      setRefresh(!refresh);
     } catch (error) {
       console.error("Error deleting :", error);
     }
