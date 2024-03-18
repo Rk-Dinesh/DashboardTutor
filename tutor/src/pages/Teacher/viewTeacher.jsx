@@ -347,7 +347,7 @@ const Teachers = () => {
               <div className="flex gap-9 items-center justify-around ">
                 <p>
                   <b className="text-lg">Curriculum Vitae</b> <br />
-                  {documents.cv}
+                  {documents.cv ? documents.cv : "No document found"}
                 </p>
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
@@ -371,7 +371,7 @@ const Teachers = () => {
               <div className="flex gap-6 items-center justify-around">
                 <p>
                   <b className="text-lg">Certificate</b> <br />
-                  {documents.certificate}
+                  {documents.certificate ? documents.certificate : "No document found"}
                 </p>
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
@@ -398,7 +398,7 @@ const Teachers = () => {
               <div className="flex gap-6 items-center justify-around">
                 <p>
                   <b className="text-lg">Id_Proof</b> <br />
-                  {documents.id_proof}
+                  {documents.id_proof ? documents.id_proof : "No document found"}
                 </p>
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
@@ -422,7 +422,7 @@ const Teachers = () => {
               <div className="flex gap-6 items-center justify-around">
                 <p>
                   <b className="text-lg">Address_Proof</b> <br />
-                  {documents.address_proof}
+                  {documents.address_proof ? documents.address_proof : "No document found"}
                 </p>
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"

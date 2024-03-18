@@ -14,72 +14,75 @@ function Invoice() {
 
   function convertNumberToWords(number) {
     const ones = [
-      "",
-      "One",
-      "Two",
-      "Three",
-      "Four",
-      "Five",
-      "Six",
-      "Seven",
-      "Eight",
-      "Nine",
+        "",
+        "One",
+        "Two",
+        "Three",
+        "Four",
+        "Five",
+        "Six",
+        "Seven",
+        "Eight",
+        "Nine",
     ];
     const teens = [
-      "Ten",
-      "Eleven",
-      "Twelve",
-      "Thirteen",
-      "Fourteen",
-      "Fifteen",
-      "Sixteen",
-      "Seventeen",
-      "Eighteen",
-      "Nineteen",
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen",
+        "Sixteen",
+        "Seventeen",
+        "Eighteen",
+        "Nineteen",
     ];
     const tens = [
-      "",
-      "",
-      "Twenty",
-      "Thirty",
-      "Forty",
-      "Fifty",
-      "Sixty",
-      "Seventy",
-      "Eighty",
-      "Ninety",
+        "",
+        "",
+        "Twenty",
+        "Thirty",
+        "Forty",
+        "Fifty",
+        "Sixty",
+        "Seventy",
+        "Eighty",
+        "Ninety",
     ];
 
     if (number === 0) return "zero";
+
+    if (number < 0 || number >= 1000) return "number too large";
+
     if (number < 10) return ones[number];
     if (number < 20) return teens[number - 10];
     if (number < 100)
-      return (
-        tens[Math.floor(number / 10)] +
-        (number % 10 !== 0 ? " " + ones[number % 10] : "")
-      );
+        return (
+            tens[Math.floor(number / 10)] +
+            (number % 10 !== 0 ? " " + ones[number % 10] : "")
+        );
     if (number < 1000)
-      return (
-        ones[Math.floor(number / 100)] +
-        " hundred" +
-        (number % 100 !== 0 ? " " + convertNumberToWords(number % 100) : "")
-      );
-    if (number < 1000000)
-      return (
-        convertNumberToWords(Math.floor(number / 1000)) +
-        " thousand" +
-        (number % 1000 !== 0 ? " " + convertNumberToWords(number % 1000) : "")
-      );
-    if (number < 1000000000)
-      return (
-        convertNumberToWords(Math.floor(number / 1000000)) +
-        " million" +
-        (number % 1000000 !== 0
-          ? " " + convertNumberToWords(number % 1000000)
-          : "")
-      );
+        return (
+            ones[Math.floor(number / 100)] +
+            " hundred" +
+            (number % 100 !== 0 ? " " + convertNumberToWords(number % 100) : "")
+        );
+    // Handling numbers with decimal values
+    if (number % 1 !== 0) {
+        const wholeNumber = Math.floor(number);
+        const decimalNumber = number - wholeNumber;
+        const decimalWords = convertNumberToWords(Math.round(decimalNumber * 100));
+        return (
+            convertNumberToWords(wholeNumber) +
+            (decimalWords === 'zero' ? ' and zero' : ' and ' + decimalWords)
+        );
+    }
+    
     return "number too large";
-  }
+}
+
+console.log(convertNumberToWords(116.82)); 
+
 
   useEffect(() => {
     fetchData();
@@ -118,178 +121,124 @@ function Invoice() {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Invoice",
-    
   });
 
+  const price = parseInt(userData.plancost);
+  const totalPrice = price + (price * 18) / 100;
+
   return (
-    
     <>
-      <div className="invoice-box" ref={componentRef}>
-        <table cellPadding={0} cellSpacing={0}>
-          <tbody>
-            <tr className="top_rw">
-              <td colSpan={2}>
-                <h4 style={{ marginBottom: 0 }}>
-                  Purchase invoice/Bill of Supply
-                </h4>
-                <span>Number: 27B00032991LQ354 Date: {userData.date}</span>
-              </td>
-              <td style={{ width: "30%", marginRight: 10 }}>
-                Order Id: {userData.tnx_id}
-              </td>
-            </tr>
-            <tr className="top">
-              <td colSpan={3}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <b>Sold By: Pro Tutor</b>
-                        <br />
-                        Delhivery Pvt. Ltd. Plot No. A5 Indian Corporation
-                        <br />
-                        Warehouse Park Village Dive-anjur, Bhiwandi, Off
-                        <br />
-                        Nh-3, Near Mankoli Naka, District Thane, Pin Code :
-                        421302
-                        <br />
-                        Mumbai, Maharashtra - 421302
-                        <br />
-                        PAN: AALFN0535C
-                        <br />
-                        GSTIN: 27AALFN0535C1ZK
-                        <br />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr className="information">
-              <td colSpan={3}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td colSpan={2}>
-                        <b>Invoice From: w3learnpoint</b>
-                        <br />
-                        Kokar, Ranchi
-                        <br />
-                        +0651-908-090-009
-                        <br />
-                        info@w3learnpoint.com
-                        <br />
-                        www.w3learnpoint.com
-                      </td>
-                      <td>
-                        <b>Invoice To: {userData.fname}</b>
-                        <br />
-                        Acme Corp.
-                        <br />
-                        John Doe
-                        <br />${"{"}email{"}"}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>
-                <table cellSpacing="0px" cellPadding="2px">
-                  <tbody>
-                    <tr className="heading">
-                      <td style={{ width: "25%" }}>SUBSCRIPTION PLAN</td>
-                      <td style={{ width: "10%", textAlign: "center" }}>
-                        CREDITS
-                      </td>
-                      <td style={{ width: "10%", textAlign: "right" }}>
-                        TNX ID
-                      </td>
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        PRICE
-                      </td>
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        TOTAL AMOUNT
-                      </td>
-                    </tr>
-                    <tr className="item">
-                      <td style={{ width: "25%" }}>
-                        {userData.plan_name} plan
-                      </td>
-                      <td style={{ width: "10%", textAlign: "center" }}>
-                        {userData.count}
-                      </td>
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        {userData.tnx_id}
-                      </td>
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        $ {userData.plancost}
-                      </td>
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        $ {userData.plancost}
-                      </td>
-                    </tr>
-                    <tr className="item">
-                      <td style={{ width: "25%" }}>
-                        <b>Grand Total</b>
-                      </td>
-                      <td style={{ width: "10%", textAlign: "center" }}>
-                        {userData.count}
-                      </td>
-                      <td style={{ width: "10%", textAlign: "right" }} />
-                      <td style={{ width: "15%", textAlign: "right" }} />
-                      <td style={{ width: "15%", textAlign: "right" }}>
-                        <b>$ {userData.plancost}</b>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr className="total">
-              <td colSpan={3} align="right">
-                Total Amount in Words:{" "}
-                <b>{convertNumberToWords(userData.plancost)} dollars Only</b>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>
-                <table cellSpacing="0px" cellPadding="2px">
-                  <tbody>
-                    <tr>
-                      <td width="50%">
-                        <b>Declaration:</b>
-                        <br />
-                        We declare that this invoice shows the actual price of
-                        the goods described above and that all particulars are
-                        true and correct. The goods sold are intended for end
-                        user consumption and not for resale.
-                      </td>
-                      <td>
-                        * This is a computer generated invoice and does not
-                        require a physical signature
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="50%" />
-                      <td>
-                        <b>Authorized Signature</b>
-                        <br />
-                        <br />
-                        ...................................
-                        <br />
-                        <br />
-                        <br />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="invoice-container" ref={componentRef}>
+        {/* Head */}
+        <div className="invoice-box" />
+        <div className="invoice">
+          {/* content */}
+          <div className="content">
+            {/* left */}
+            <div className="content-left">
+              <img src={logo} alt="Pro-tutor logo" className="logo" />
+              <h3 className="title">SST Invoice</h3>
+            </div>
+            {/* right */}
+            <div className="content-right">
+              <p style={{ textAlign: "right" }}>
+                <b> PRO TUTOR EDUCATIONPRO TUTOR EDUCATION </b>
+                <br />
+                D-3-15, Jalan Tokoh 25/28, Seksyen 25,
+                <br />
+                40400 Shah Alam, Selangor <br />
+                protutoreducation@gmail.com
+              </p>
+            </div>
+          </div>
+          <hr />
+          {/* Address */}
+          <div className="address">
+            <div>
+              <p className="ad-data">
+                <b>Bill</b> <br />
+                {userData.fname}
+                <br />
+                Wilayah Persekutuan,Malasiya -55100 <br />
+                {userData.email}
+              </p>
+            </div>
+            <div>
+              <p className="ad-data">
+                <b>Invoice #</b>
+                <br />
+                {userData.sub_id} <br />
+                <b>Date</b> <br />
+                {userData.date}
+              </p>
+            </div>
+          </div>
+          <hr />
+          {/* table */}
+          <table className="body-values">
+            <tbody className="table-values">
+              <tr className="values">
+                <th>S.NO</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>AMOUNT</th>
+              </tr>
+              <tr className="values">
+                <td>1</td>
+                <td>{userData.plan_name} Plan</td>
+                <td>RM{userData.plancost}</td>
+                <td>1</td>
+                <td>RM{userData.plancost}</td>
+              </tr>
+              <div className="space">
+                <tr className="values">
+                  <td></td>
+                  <td></td>
+                  <td>Sub Total</td>
+                  <td></td>
+                  <td>RM{userData.plancost}</td>
+                </tr>
+                <tr className="values">
+                  <td></td>
+                  <td></td>
+                  <td>SST( 8% )</td>
+                  <td></td>
+                  <td>RM{(userData.plancost / 100) * 18}</td>
+                </tr>
+              </div>
+            </tbody>
+          </table>
+          <hr />
+          {/* values */}
+          <div className="amounts">
+            <div className="amount">
+              <p>
+                <b>Total Amount in Words:</b>
+              </p>
+              <p>{convertNumberToWords(116.82)} ringgits only /-</p>
+            </div>
+            <div className="total-amount">RM{totalPrice}</div>
+          </div>
+          {/* Account details */}
+          <div className="ac-data">
+            <p>
+              <b>Acc Details:</b>
+              <br />
+              Acc no. : 000000000000 <br />
+              Acc Name: Protutor Education <br />
+              IFSC Code : ABC0000123
+              <br />
+              Branch: Malasiya
+            </p>
+          </div>
+        </div>
+        {/* footer */}
+        <div className="footer">
+          <h2 className="foot-title"> protutoreducation@gmail.com</h2>
+        </div>
       </div>
+
       <br />
       <div className="ltr:text-right rtl:text-left">
         <button className="btn btn-dark text-center" onClick={handlePrint}>

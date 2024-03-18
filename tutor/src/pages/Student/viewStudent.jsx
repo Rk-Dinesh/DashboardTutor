@@ -287,7 +287,7 @@ const Students = () => {
                                                     PHONE
                                                 </div>
                                                 <a
-                                                    href="tel:0189749676767"
+
                                                     className="text-base text-slate-600 dark:text-slate-50"
                                                 >
                                                     {student?.gphone || "N/A"}
