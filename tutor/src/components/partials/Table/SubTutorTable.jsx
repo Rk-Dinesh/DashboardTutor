@@ -2,6 +2,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import Icon from "../../../components/ui/Icon";
 
+import Tooltip from "../../ui/Tooltip";
+
 import {
   useTable,
   useSortBy,
@@ -50,10 +52,13 @@ const SubTutorTable = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${API}/gettutorplan`);
-
+     
       if (response.status === 200) {
         // Add rowIndex to each user object and set it in state
-        const usersWithRowIndex = response.data.map((user, index) => ({
+
+        const reversedData = response.data.reverse();
+        // console.log(reversedData);
+        const usersWithRowIndex = reversedData.map((user, index) => ({
           ...user,
           rowIndex: index + 1,
         }));
@@ -71,7 +76,7 @@ const SubTutorTable = () => {
     {
       columns: COLUMNS,
       data,
-      initialState: { pageIndex: 0, pageSize: 5 }, // Initial page settings
+      initialState: { pageIndex: 0, pageSize: 3 }, // Initial page settings
     },
     useGlobalFilter,
     useSortBy,
@@ -104,41 +109,41 @@ const SubTutorTable = () => {
   return (
     <>
       <div className="md:flex justify-between items-center mb-6">
-                <div className=" flex items-center space-x-3 rtl:space-x-reverse">
-                    <select
-                        className="form-control py-2 w-max"
-                        value={pageSize}
-                        onChange={(e) => setPageSize(Number(e.target.value))}
-                    >
-                        {[5, 10, 15].map((pageSize) => (
-                            <option key={pageSize} value={pageSize}>
-                                Show {pageSize}
-                            </option>
-                        ))}
-                    </select>
-                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
-                        Page{" "}
-                        <span>
-                            {pageIndex + 1} of {pageOptions.length}
-                        </span>
-                    </span>
-                </div>
-                <div>
-                    <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-                </div>
-            </div>
+        <div className=" flex items-center space-x-3 rtl:space-x-reverse">
+          <select
+            className="form-control py-2 w-max"
+            value={pageSize}
+            onChange={(e) => setPageSize(Number(e.target.value))}
+          >
+            {[3, 6, 10].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            Page{" "}
+            <span>
+              {pageIndex + 1} of {pageOptions.length}
+            </span>
+          </span>
+        </div>
+        <div>
+          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        </div>
+      </div>
       <div className="overflow-x-auto -mx-6">
         <div className="inline-block min-w-full align-middle">
           <div className="overflow-hidden ">
-            <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+            <table className="min-w-full divide-y divide-slate-100 table-auto dark:divide-slate-700">
               <thead className="bg-slate-200 dark:bg-slate-700">
                 <tr>
                   <th className=" table-th ">#</th>
                   <th className=" table-th "> ID</th>
-                  <th className=" table-th ">TUTOR ID</th>
+                  {/* <th className=" table-th ">TUTOR ID</th> */}
                   <th className=" table-th ">TUTOR </th>
                   <th className=" table-th ">PLAN</th>
-                  <th className=" table-th ">AMOUNT</th>
+                  {/* <th className=" table-th ">AMOUNT</th> */}
                   <th className=" table-th ">TRANSACTION ID</th>
                   <th className=" table-th ">DATE</th>
                   <th className=" table-th ">STATUS</th>
@@ -149,22 +154,23 @@ const SubTutorTable = () => {
                 {page.map((row) => {
                   prepareRow(row);
                   return (
-                    <tr {...row.getRowProps()} key={row.original.tutorsub_id}>
+                    <tr {...row.getRowProps()} key={row.original.sub_id}>
                       <td className="table-td">{row.original.rowIndex}</td>
-                      <td className="table-td">{row.original.tutorsub_id}</td>
-                      <td className="table-td">{row.original.tutor_id}</td>
+                      <td className="table-td">{row.original.sub_id}</td>
+                      {/* <td className="table-td">{row.original.tutor_id}</td> */}
                       <td className="table-td">{row.original.fname}</td>
                       <td className="table-td">{row.original.plan_name}</td>
-                      <td className="table-td">{row.original.plancost}</td>
+                      {/* <td className="table-td">{row.original.plancost}</td> */}
                       <td className="table-td">{row.original.tnx_id}</td>
                       <td className="table-td">{row.original.date}</td>
                       <td className="table-td">
-                        <div
-                          className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-                            row.original.status === "paid"
-                              ? "text-success-500 bg-success-500"
-                              : ""
-                          } 
+                        <div className="d-flex justify-around rtl-space-x-reverse">
+                          <div
+                            className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+                              row.original.status === "paid"
+                                ? "text-success-500 bg-success-500"
+                                : ""
+                            } 
             ${
               row.original.status === "unpaid"
                 ? "text-danger-500 bg-danger-500"
@@ -172,8 +178,26 @@ const SubTutorTable = () => {
             }
             
              `}
-                        >
-                          {row.original.status}
+                          >
+                            {row.original.status}
+                          </div>
+                          <div className="">
+                            {row.original.status === "paid" && (
+                              <Tooltip
+                                content="Invoice"
+                                placement="top"
+                                arrow
+                                animation="shift-away"
+                              >
+                                <Link
+                                  to={`/invoice?sub_id=${row.original.sub_id}`}
+                                  className="action-btn"
+                                >
+                                  <Icon icon="heroicons:document" />
+                                </Link>
+                              </Tooltip>
+                            )}
+                          </div>
                         </div>
                       </td>
                     </tr>

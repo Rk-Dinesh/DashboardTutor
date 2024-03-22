@@ -14,75 +14,86 @@ function Invoice() {
 
   function convertNumberToWords(number) {
     const ones = [
-        "",
-        "One",
-        "Two",
-        "Three",
-        "Four",
-        "Five",
-        "Six",
-        "Seven",
-        "Eight",
-        "Nine",
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
     ];
     const teens = [
-        "Ten",
-        "Eleven",
-        "Twelve",
-        "Thirteen",
-        "Fourteen",
-        "Fifteen",
-        "Sixteen",
-        "Seventeen",
-        "Eighteen",
-        "Nineteen",
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
     ];
     const tens = [
-        "",
-        "",
-        "Twenty",
-        "Thirty",
-        "Forty",
-        "Fifty",
-        "Sixty",
-        "Seventy",
-        "Eighty",
-        "Ninety",
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
     ];
 
     if (number === 0) return "zero";
 
-    if (number < 0 || number >= 1000) return "number too large";
+    if (number < 0 || number >= 1e12) return "number too large";
 
     if (number < 10) return ones[number];
     if (number < 20) return teens[number - 10];
     if (number < 100)
-        return (
-            tens[Math.floor(number / 10)] +
-            (number % 10 !== 0 ? " " + ones[number % 10] : "")
-        );
+      return (
+        tens[Math.floor(number / 10)] +
+        (number % 10 !== 0 ? " " + ones[number % 10] : "")
+      );
     if (number < 1000)
-        return (
-            ones[Math.floor(number / 100)] +
-            " hundred" +
-            (number % 100 !== 0 ? " " + convertNumberToWords(number % 100) : "")
-        );
-    // Handling numbers with decimal values
-    if (number % 1 !== 0) {
-        const wholeNumber = Math.floor(number);
-        const decimalNumber = number - wholeNumber;
-        const decimalWords = convertNumberToWords(Math.round(decimalNumber * 100));
-        return (
-            convertNumberToWords(wholeNumber) +
-            (decimalWords === 'zero' ? ' and zero' : ' and ' + decimalWords)
-        );
-    }
-    
-    return "number too large";
-}
+      return (
+        ones[Math.floor(number / 100)] +
+        " hundred" +
+        (number % 100 !== 0 ? " " + convertNumberToWords(number % 100) : "")
+      );
+    if (number < 1e6)
+      return (
+        convertNumberToWords(Math.floor(number / 1000)) +
+        " thousand" +
+        (number % 1000 !== 0 ? " " + convertNumberToWords(number % 1000) : "")
+      );
+    if (number < 1e9)
+      return (
+        convertNumberToWords(Math.floor(number / 1e6)) +
+        " million" +
+        (number % 1e6 !== 0 ? " " + convertNumberToWords(number % 1e6) : "")
+      );
+    if (number < 1e12)
+      return (
+        convertNumberToWords(Math.floor(number / 1e9)) +
+        " billion" +
+        (number % 1e9 !== 0 ? " " + convertNumberToWords(number % 1e9) : "")
+      );
+  }
 
-console.log(convertNumberToWords(116.82)); 
-
+  function convertToRinggitsAndSens(number) {
+    const ringgitsWords = convertNumberToWords(Math.floor(number));
+    const sensWords = convertNumberToWords(
+      Math.round((number - Math.floor(number)) * 100)
+    );
+    return `${ringgitsWords} ringgits and ${sensWords} sens`;
+  }
 
   useEffect(() => {
     fetchData();
@@ -159,8 +170,9 @@ console.log(convertNumberToWords(116.82));
                 <b>Bill</b> <br />
                 {userData.fname}
                 <br />
-                Wilayah Persekutuan,Malasiya -55100 <br />
-                {userData.email}
+                {userData.address} <br />
+                Phone : {userData.phone} <br />
+                 email : {userData.email}
               </p>
             </div>
             <div>
@@ -204,7 +216,7 @@ console.log(convertNumberToWords(116.82));
                   <td></td>
                   <td>SST( 8% )</td>
                   <td></td>
-                  <td>RM{(userData.plancost / 100) * 18}</td>
+                  <td>RM{((userData.plancost / 100) * 18).toFixed(2)}</td>
                 </tr>
               </div>
             </tbody>
@@ -214,9 +226,9 @@ console.log(convertNumberToWords(116.82));
           <div className="amounts">
             <div className="amount">
               <p>
-                <b>Total Amount in Words:</b>
+                <b>Amount in Words:</b>
               </p>
-              <p>{convertNumberToWords(116.82)} ringgits only /-</p>
+              <p>{convertToRinggitsAndSens(totalPrice)}</p>
             </div>
             <div className="total-amount">RM{totalPrice}</div>
           </div>

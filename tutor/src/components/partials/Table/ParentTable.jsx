@@ -54,7 +54,8 @@ const ParentTable = () => {
 
       if (response.status === 200) {
         // Add rowIndex to each user object and set it in state
-        const usersWithRowIndex = response.data.map((user, index) => ({
+        const reversedData = response.data.reverse();
+        const usersWithRowIndex = reversedData.map((user, index) => ({
           ...user,
           rowIndex: index + 1,
         }));

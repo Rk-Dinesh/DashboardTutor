@@ -54,7 +54,8 @@ const SubParentTable = () => {
 
       if (response.status === 200) {
         // Add rowIndex to each user object and set it in state
-        const usersWithRowIndex = response.data.map((user, index) => ({
+        const reversedData = response.data.reverse();
+        const usersWithRowIndex = reversedData.map((user, index) => ({
           ...user,
           rowIndex: index + 1,
         }));
@@ -72,7 +73,7 @@ const SubParentTable = () => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 5 }, // Initial page settings
+      initialState: { pageIndex: 0, pageSize: 3 }, // Initial page settings
     },
     useGlobalFilter,
     useSortBy,
@@ -111,7 +112,7 @@ const SubParentTable = () => {
             value={pageSize}
             onChange={(e) => setPageSize(Number(e.target.value))}
           >
-            {[5, 10, 15].map((pageSize) => (
+            {[3, 6, 10].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
@@ -139,7 +140,7 @@ const SubParentTable = () => {
                   {/* <th className=" table-th " >PARENT ID</th> */}
                   <th className=" table-th ">PARENT</th>
                   <th className=" table-th ">PLAN</th>
-                  <th className=" table-th ">AMOUNT</th>
+                  {/* <th className=" table-th ">AMOUNT</th> */}
                   <th className=" table-th ">TRANSACTION ID</th>
                   <th className=" table-th ">DATE</th>
                   <th className=" table-th ">STATUS</th>
@@ -156,7 +157,7 @@ const SubParentTable = () => {
                       {/* <td className="table-td">{row.original.parent_id}</td> */}
                       <td className="table-td">{row.original.fname}</td>
                       <td className="table-td">{row.original.plan_name}</td>
-                      <td className="table-td">{row.original.plancost}</td>
+                      {/* <td className="table-td">{row.original.plancost}</td> */}
                       <td className="table-td">{row.original.tnx_id}</td>
                       <td className="table-td">{row.original.date}</td>
 
