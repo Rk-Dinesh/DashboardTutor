@@ -49,8 +49,8 @@ const TeacherTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${API}/teacherget`);
-
+      const response = await axios.get(`${API}/teacherget1`);
+     
       if (response.status === 200) {
         // Add rowIndex to each user object and set it in state
         const usersWithRowIndex = response.data.map((user, index) => ({
