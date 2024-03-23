@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import "./invoice.css";
+import { API } from "../../host";
 
 function Invoice() {
   const location = useLocation();
@@ -106,15 +107,15 @@ function Invoice() {
 
       if (sub_id.startsWith("SPP")) {
         response = await axios.get(
-          `http://localhost:3000/getparentplanId?sub_id=${sub_id}`
+          `${API}/getparentplanId?sub_id=${sub_id}`
         );
       } else if (sub_id.startsWith("SPT")) {
         response = await axios.get(
-          `http://localhost:3000/gettutorplanId?sub_id=${sub_id}`
+          `${API}/gettutorplanId?sub_id=${sub_id}`
         );
       } else if (sub_id.startsWith("SPS")) {
         response = await axios.get(
-          `http://localhost:3000/getstudentplanid?sub_id=${sub_id}`
+          `${API}/getstudentplanid?sub_id=${sub_id}`
         );
       } else {
         console.error("Invalid sub_id format");
