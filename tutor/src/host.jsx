@@ -1,2 +1,2 @@
 
-export const API = 'http://13.54.14.73:3000';
+export const API = 'http://localhost:3000';

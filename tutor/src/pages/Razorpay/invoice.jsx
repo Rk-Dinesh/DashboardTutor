@@ -234,7 +234,7 @@ function Invoice() {
             <div className="total-amount">RM{totalPrice}</div>
           </div>
           {/* Account details */}
-          <div className="ac-data">
+          {/* <div className="ac-data">
             <p>
               <b>Acc Details:</b>
               <br />
@@ -244,7 +244,7 @@ function Invoice() {
               <br />
               Branch: Malasiya
             </p>
-          </div>
+          </div> */}
         </div>
         {/* footer */}
         <div className="footer">
