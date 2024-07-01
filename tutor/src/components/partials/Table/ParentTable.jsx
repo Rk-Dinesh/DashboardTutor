@@ -73,7 +73,7 @@ const ParentTable = () => {
       const response = await axios.delete(
         `${API}/parentDelete?parent_id=${parent_id}`
       );
-      console.log(response);
+      
       setRefresh(!refresh);
     } catch (error) {
       console.error("Error deleting :", error);

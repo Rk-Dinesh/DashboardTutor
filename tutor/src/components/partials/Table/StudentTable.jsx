@@ -72,7 +72,7 @@ const StudentTable = () => {
       const response = await axios.delete(
         `${API}/studentDelete?student_id=${student_id}`
       );
-      console.log(response);
+     
       setRefresh(!refresh)
     } catch (error) {
       console.error("Error deleting :", error);

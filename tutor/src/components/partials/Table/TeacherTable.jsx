@@ -42,10 +42,11 @@ const COLUMNS = [
 const TeacherTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   const fetchData = async () => {
     try {
@@ -71,8 +72,7 @@ const TeacherTable = () => {
       const response = await axios.delete(
         `${API}/teacherDelete?tutor_id=${tutor_id}`
       );
-      console.log(response);
-      window.location.reload();
+      setRefresh(!refresh)
     } catch (error) {
       console.error("Error deleting :", error);
     }

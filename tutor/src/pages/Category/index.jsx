@@ -65,7 +65,7 @@ const Categories = () => {
                             <div style={{position : 'absolute', bottom : '10px', right : '20px'}} >
                             <button 
                             onClick={() => handleDelete(category.subject)}
-                            className="bg-slate-100 text-slate-400  p-2.5  mb-1.5 rounded-full hover:bg-red-200 hover: text-red-600">
+                            className="bg-slate-100 text-slate-400  p-2.5  mb-1.5 rounded-full hover:bg-red-200 hover:text-red-600">
                                     <Icon icon="heroicons:trash"  className="text-slate-400 dark:text-slate-400 hover:text-danger-600 dark:hover:text-danger-600" />
                                 </button>
                             </div>

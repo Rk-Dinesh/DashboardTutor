@@ -10,7 +10,7 @@ function Invoice() {
   const location = useLocation();
   const componentRef = useRef();
   const Id = new URLSearchParams(location.search).get("sub_id");
-  console.log(Id, "ide req");
+  
   const [userData, setUserData] = useState([]);
 
   function convertNumberToWords(number) {
@@ -124,7 +124,7 @@ function Invoice() {
       //console.log(response);
       const responseData = response.data;
       setUserData(responseData);
-      console.log(responseData);
+      
     } catch (error) {
       console.error("Error fetching user data:", error);
     }

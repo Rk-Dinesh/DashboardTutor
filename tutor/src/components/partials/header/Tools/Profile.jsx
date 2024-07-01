@@ -26,7 +26,7 @@ const profileLabel =({token}) => {
         const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
         const responseData = response.data;
         setUserData(responseData);
-        console.log(responseData)
+      
       } catch (error) {
         console.log(error);
       }
