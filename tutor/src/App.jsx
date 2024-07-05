@@ -26,6 +26,8 @@ import PlanForm from "./pages/SubscriptionPlan/Planform";
 import Plan from "./pages/SubscriptionPlan";
 import Subscribers from "./pages/Subscribers";
 import Invoice from "./pages/Razorpay/invoice";
+import NotFound from "./404";
+import Cover from "./pages/Coverimage";
 
 
 
@@ -65,9 +67,11 @@ function App() {
       <ToastContainer position="top-right" autoClose={1000} />
       <Routes>
         <Route path="" element={<Login setToken={setToken} />} />
-        <Route path="/*" element={token ? <Layout token={token}/> : <Navigate to='/' />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="admin" element={<Admin />} />
+        <Route path="/" element={token ? <Layout token={token} Current_user ={Current_user}/> : <Navigate to='/' />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          {Current_user === 'superadmin' && (
+            <Route path="admin" element={<Admin />} />
+          )}
           <Route path="categories" element={<Categories Current_user ={Current_user}/>} />
           <Route path="student" element={<Student Current_user ={Current_user}/>} />
           <Route path="students" element={<Students/>} />
@@ -75,16 +79,17 @@ function App() {
           <Route path="parents" element={<Parents/>} />
           <Route path="teacher" element={<Teacher  Current_user ={Current_user}/>} />
           <Route path="tutor" element={<Teachers/>} />
-          <Route path="plan" element={<Plan/>} />
+          <Route path="plan" element={<Plan Current_user ={Current_user}/>} />
           <Route path="subscribers" element={<Subscribers/>} />
           <Route path="form" element={<AdminForm />} />
           <Route path="category_form" element={<CategoryForm />} />
           <Route path="plan_form" element={<PlanForm />} />
-          <Route path="updateform" element={<UpdateForm />} />
+          <Route path="updateform" element={<UpdateForm Current_user ={Current_user}/>} />
           <Route path="invoice" element={<Invoice />} />
-          <Route path="profile" element={<UserProfile token={token} />} />
-
+          <Route path="profile" element={<UserProfile token={token} Current_user ={Current_user} />} />
+          <Route path="cover" element={<Cover Current_user ={Current_user}/>} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

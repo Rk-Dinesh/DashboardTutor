@@ -52,6 +52,12 @@ export const menuItems = [
     isHide: true,
     icon: "wpf:renew-subscription",
     link: "subscribers"
+  },
+  {
+    title: "Banner",
+    isHide: true,
+    icon: "ion:image-outline",
+    link: "cover"
   }
 ];
 

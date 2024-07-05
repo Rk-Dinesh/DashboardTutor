@@ -5,30 +5,22 @@ import * as yup from "yup";
 
 import Card from "../../components/ui/Card";
 import axios from "axios";
-import { useParams,useLocation,useNavigate} from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { API } from "../../host";
 
-
-
 const FormValidationSchema = yup.object({
-
   firstname: yup.string().required("First Name is required"),
   lastname: yup.string().required("Last Name is required"),
   phone: yup.string().required("Phone Number is required"),
   email: yup.string().required("Email is Required"),
-
 });
 
-const UpdateAdmin = () => {
-  const {
-    setValue,
-    
-  } = useForm({
+const UpdateAdmin = ({ Current_user }) => {
+  const { setValue } = useForm({
     resolver: yupResolver(FormValidationSchema),
   });
 
- 
- // const { userid } = useParams();
+  // const { userid } = useParams();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const userid = params.get("userid");
@@ -36,30 +28,29 @@ const UpdateAdmin = () => {
   const [lname, setLname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("")
- const navigate = useNavigate()
-
+  const [role, setRole] = useState("");
+  const [role1, setRole1] = useState("")
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-       
         const response = await axios.get(`${API}/getadmin?userid=${userid}`);
         const responseData = response.data;
-       // console.log(responseData)
+        // console.log(responseData)
 
-        setFname(responseData.fname)
-        setLname(responseData.lname)
-        setEmail(responseData.email)
-        setPhone(responseData.phone)       
-        setRole(responseData.role)
+        setFname(responseData.fname);
+        setLname(responseData.lname);
+        setEmail(responseData.email);
+        setPhone(responseData.phone);
+        setRole(responseData.role);
+        setRole1(responseData.role)
 
         setValue("fname", responseData.fname);
         setValue("lname", responseData.lname);
         setValue("email", responseData.email);
         setValue("phone", responseData.phone);
         setValue("role", responseData.role);
-
       } catch (error) {
         console.log(error);
       }
@@ -70,41 +61,47 @@ const UpdateAdmin = () => {
 
   const Update = async (e) => {
     e.preventDefault();
-
+  
     try {
-      
-      const response = await axios.put(`${API}/updateadmin?userid=${userid}`, {
+      let updateData = {
         userid,
         fname: fname,
         lname: lname,
         email: email,
         phone: phone,
-        role: role,
-        
-      });
-
-      // console.log(response);
-      navigate('/admin');
+      };
+  
+      if (Current_user === "superadmin") {
+        updateData.role = role;
+      } else {
+        updateData.role = role1; 
+      }
+  
+      const response = await axios.put(`${API}/updateadmin?userid=${userid}`, updateData);
+  
+      {
+        Current_user === "superadmin" && navigate("/admin");
+      }
+      {
+        Current_user === "admin" && navigate("/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div>
-      {/* <div className="flex justify-between flex-wrap items-center mb-6">
-        <h5 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
-          Update Admin
-        </h5>
-      </div> */}
       <div>
         <div className="d-flex  align-items-center">
           <div className="col-md-6">
             <div className="bg-transparent">
-              <Card title='Update Admin'>
-
-                <form className="space-y-3" onSubmit={Update} >
-                  <div >
-                    <label htmlFor="fname" className="capitalize form-label"><b>FirstName </b></label>
+              <Card title="Update Admin">
+                <form className="space-y-3" onSubmit={Update}>
+                  <div>
+                    <label htmlFor="fname" className="capitalize form-label">
+                      <b>FirstName </b>
+                    </label>
                     <input
                       type="text"
                       name="fname"
@@ -116,8 +113,10 @@ const UpdateAdmin = () => {
                     />
                   </div>
 
-                  <div >
-                    <label htmlFor="lname" className="capitalize form-label"><b>LastName </b></label>
+                  <div>
+                    <label htmlFor="lname" className="capitalize form-label">
+                      <b>LastName </b>
+                    </label>
                     <input
                       type="text"
                       name="lname"
@@ -129,8 +128,10 @@ const UpdateAdmin = () => {
                     />
                   </div>
 
-                  <div >
-                    <label htmlFor="email" className="capitalize form-label"><b>Email</b></label>
+                  <div>
+                    <label htmlFor="email" className="capitalize form-label">
+                      <b>Email</b>
+                    </label>
                     <input
                       type="text"
                       name="email"
@@ -142,8 +143,10 @@ const UpdateAdmin = () => {
                     />
                   </div>
 
-                  <div >
-                    <label htmlFor="phone" className="capitalize form-label"><b>Phone </b></label>
+                  <div>
+                    <label htmlFor="phone" className="capitalize form-label">
+                      <b>Phone </b>
+                    </label>
                     <input
                       type="text"
                       name="phone"
@@ -155,18 +158,24 @@ const UpdateAdmin = () => {
                     />
                   </div>
 
-                  <div >
-                    <label htmlFor="role" className="capitalize form-label"><b>Role</b></label>
-                    <input
-                      type="text"
+                  {Current_user === "superadmin" && (
+                  <div>
+                    <label htmlFor="role" className="capitalize form-label">
+                      <b>Role</b>
+                    </label>
+                    <select
                       name="role"
-                      className=" form-control py-2 "
+                      className="form-control py-2"
                       id="role"
-                      placeholder="Role"
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
-                    />
+                    >
+                      <option value="">Select Role</option>
+                      <option value="admin">Admin</option>
+                      <option value="superadmin">Super Admin</option>
+                    </select>
                   </div>
+                  )}
 
                   <div className="ltr:text-right rtl:text-left">
                     <button className="btn btn-dark text-center" type="submit">

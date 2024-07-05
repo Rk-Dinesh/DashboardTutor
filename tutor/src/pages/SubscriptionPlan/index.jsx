@@ -7,7 +7,7 @@ import Lottie from "lottie-react";
 import { API } from "../../host";
 import Modal from "./Modal";  // import the modal component
 
-const Plan = () => {
+const Plan = ({Current_user}) => {
   const [plan, setPlan] = useState([]);
   const [animations, setAnimations] = useState({});
   const [modal, setModal] = useState(false);
@@ -39,25 +39,6 @@ const Plan = () => {
       setAnimations(animationsMap);
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
-  };
-
-  const handleDelete = async (plan_id) => {
-    try {
-      await axios.delete(`${API}/deleteplan?plan_id=${plan_id}`);
-
-      setPlan((prevPlans) =>
-        prevPlans.filter((plan) => plan.plan_id !== plan_id)
-      );
-
-      // Remove the animation data for the deleted plan
-      setAnimations((prevAnimations) => {
-        const newAnimations = { ...prevAnimations };
-        delete newAnimations[plan_id];
-        return newAnimations;
-      });
-    } catch (error) {
-      console.error("Error deleting Plan:", error);
     }
   };
 
@@ -129,17 +110,8 @@ const Plan = () => {
                   </div>
                 </div>
               </div>
+              {Current_user === 'superadmin' && (
               <div className="flex justify-end">
-                {/* <button
-                  onClick={() => handleDelete(plan.plan_id)}
-                  className="bg-slate-100 text-slate-400 p-2 rounded-full hover:bg-red-200 hover:text-red-600"
-                >
-                  <Icon
-                    icon="heroicons:trash"
-                    className="text-slate-400 dark:text-slate-400 hover:text-danger-600 dark:hover:text-danger-600"
-                  />
-                </button>
-                &nbsp; */}
                 <button
                   onClick={() => openModal(plan)}
                   className="bg-slate-100 text-slate-400 p-2 rounded-full hover:bg-green-200 hover:text-green-600"
@@ -150,6 +122,7 @@ const Plan = () => {
                   />
                 </button>
               </div>
+              )}
             </div>
           </Card>
         ))}

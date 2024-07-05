@@ -2,14 +2,20 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Icon from "../../../components/ui/Icon";
 
-const Navmenu = ({ menus }) => {
+const Navmenu = ({ menus, Current_user }) => {
   const location = useLocation();
   const locationName = location.pathname.replace("/", "");
+  
 
   return (
     <>
       <ul>
-        {menus.map((item, i) => (
+        {menus.filter((item) => {
+          if (Current_user === "admin" && item.title === "Admin") {
+            return false; // hide the "Admin" menu item if current user is admin
+          }
+          return true;
+        }).map((item, i) => (
           <li
             key={i}
             className={`single-sidebar-menu
@@ -35,5 +41,3 @@ const Navmenu = ({ menus }) => {
 };
 
 export default Navmenu;
-
-

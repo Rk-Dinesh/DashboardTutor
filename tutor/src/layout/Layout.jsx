@@ -12,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 
 import { motion } from "framer-motion";
 
-const Layout = ({token}) => {
+const Layout = ({token,Current_user}) => {
   
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -38,7 +38,7 @@ const Layout = ({token}) => {
       <ToastContainer />
       <Header className={width > breakpoints.lg ? switchHeaderClass() : ""} token={token}/>
       {menuType === "vertical" && width > breakpoints.lg && !menuHidden && (
-        <Sidebar />
+        <Sidebar Current_user ={Current_user}/>
       )}
       <div
         className={`content-wrapper transition-all duration-150 ${width > 1024 ? switchHeaderClass() : ""
