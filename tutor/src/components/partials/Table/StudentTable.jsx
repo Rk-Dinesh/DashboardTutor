@@ -39,10 +39,10 @@ const COLUMNS = [
   },
 ];
 
-const StudentTable = () => {
+const StudentTable = ({ Current_user }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -72,8 +72,8 @@ const StudentTable = () => {
       const response = await axios.delete(
         `${API}/studentDelete?student_id=${student_id}`
       );
-     
-      setRefresh(!refresh)
+
+      setRefresh(!refresh);
     } catch (error) {
       console.error("Error deleting :", error);
     }
@@ -170,41 +170,57 @@ const StudentTable = () => {
                       <td className="table-td">{row.original.gender}</td>
                       <td className="table-td">{row.original.phone}</td>
                       <td className="table-td">{row.original.email}</td>
-                      <td className="table-td">
-                        <div className="d-flex justify-around rtl-space-x-reverse">
-                          <Tooltip
-                            content="View Details"
-                            placement="top"
-                            arrow
-                            animation="shift-away"
-                          >
+                      {Current_user === "superadmin" && (
+                        <td className="table-td">
+                          <div className="d-flex justify-around rtl-space-x-reverse">
+                            <Tooltip
+                              content="View Details"
+                              placement="top"
+                              arrow
+                              animation="shift-away"
+                            >
+                              <Link
+                                to={`/students?student_id=${row.original.student_id}`}
+                                className="action-btn"
+                              >
+                                <Icon icon="heroicons:eye" />
+                              </Link>
+                            </Tooltip>
+                            &nbsp;
+                            <Tooltip
+                              content="Delete"
+                              placement="top"
+                              arrow
+                              animation="shift-away"
+                              theme="danger"
+                            >
+                              <button
+                                className="action-btn"
+                                type="button"
+                                onClick={() =>
+                                  handleDelete(row.original.student_id)
+                                }
+                              >
+                                <Icon icon="heroicons:trash" />
+                              </button>
+                            </Tooltip>
+                          </div>
+                        </td>
+                      )}
+
+                      {Current_user === "admin" && (
+                        <td className="table-td">
+                          <div className="d-flex justify-around rtl-space-x-reverse">
                             <Link
                               to={`/students?student_id=${row.original.student_id}`}
-                              className="action-btn"
                             >
-                              <Icon icon="heroicons:eye" />
+                              <button className="bg-primary-500 px-3 py-1.5 rounded text-base text-white hover:bg-primary-600">
+                                view
+                              </button>
                             </Link>
-                          </Tooltip>
-                          &nbsp;
-                          <Tooltip
-                            content="Delete"
-                            placement="top"
-                            arrow
-                            animation="shift-away"
-                            theme="danger"
-                          >
-                            <button
-                              className="action-btn"
-                              type="button"
-                              onClick={() =>
-                                handleDelete(row.original.student_id)
-                              }
-                            >
-                              <Icon icon="heroicons:trash" />
-                            </button>
-                          </Tooltip>
-                        </div>
-                      </td>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}

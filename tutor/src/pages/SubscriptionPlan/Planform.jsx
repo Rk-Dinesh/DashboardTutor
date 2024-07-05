@@ -105,7 +105,7 @@ const handleInputChange = (event) => {
                     name="planimage"
                     className="form-control py-2"
                     id="planimage"
-                    accept=".jpg, .jpeg, .png"
+                    accept=".jpg, .jpeg, .png,.json"
                     onChange={handleInputChange}
                   />
                 </div>

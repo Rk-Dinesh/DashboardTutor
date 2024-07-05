@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import SignInSide from "./pages/auth/login1";
 import Dashboard from "./pages/dashboard";
 import Admin from "./pages/Admin";
-
+import { API } from "./host";
 import AdminForm from "./pages/Admin/AdminForm";
 import UpdateForm from "./pages/Admin/UpdateForm";
 import Login from "./pages/auth/login";
@@ -30,27 +31,52 @@ import Invoice from "./pages/Razorpay/invoice";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const decodedToken = token ? jwtDecode(token) : null;
+  const [userData, setUserData] = useState({role : ""});
+
+  useEffect(() => {
+    if (decodedToken) {
+      const decodedEmail = decodedToken.email;
+
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
+          const responseData = response.data;
+          setUserData(responseData.role);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [decodedToken]);
+
+  const Current_user = userData;
+  console.log("user", Current_user);
+
+  if (!token) {
+    // Handle the case where token is null
+    return <Login setToken={setToken} />;
+  }
 
   return (
     <div>
       <ToastContainer position="top-right" autoClose={1000} />
       <Routes>
         <Route path="" element={<Login setToken={setToken} />} />
-        {/* <Route path="" element={<SignInSide setToken={setToken} />} /> */}
         <Route path="/*" element={token ? <Layout token={token}/> : <Navigate to='/' />}>
           <Route path="dashboard" element={<Dashboard />} />
-          
           <Route path="admin" element={<Admin />} />
-          <Route path="categories" element={<Categories />} />
-          <Route path="student" element={<Student />} />
+          <Route path="categories" element={<Categories Current_user ={Current_user}/>} />
+          <Route path="student" element={<Student Current_user ={Current_user}/>} />
           <Route path="students" element={<Students/>} />
-          <Route path="parent" element={<Parent />} />
+          <Route path="parent" element={<Parent Current_user ={Current_user}/>} />
           <Route path="parents" element={<Parents/>} />
-          <Route path="teacher" element={<Teacher />} />
+          <Route path="teacher" element={<Teacher  Current_user ={Current_user}/>} />
           <Route path="tutor" element={<Teachers/>} />
           <Route path="plan" element={<Plan/>} />
           <Route path="subscribers" element={<Subscribers/>} />
-          {/* <Route path="page" element={<SignInSide />} /> */}
           <Route path="form" element={<AdminForm />} />
           <Route path="category_form" element={<CategoryForm />} />
           <Route path="plan_form" element={<PlanForm />} />

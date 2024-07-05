@@ -69,7 +69,7 @@ const Profile = ({token}) => {
   
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
     dispatch(logOut()); 
     navigate("/"); 
   };

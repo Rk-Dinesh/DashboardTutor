@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Icon } from '@iconify/react'
 import { API } from '../../host'
 
-const Categories = () => {
+const Categories = ({Current_user}) => {
 
     const [category, setCategory] = useState([]);
 
@@ -41,7 +41,7 @@ const Categories = () => {
     };
     return (
         <div>
-            <HomeCategory title="Category" />
+            <HomeCategory title="Category" Current_user ={Current_user}/>
             <div className="grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 h-max">
                 {category.map((category, index) => (
                     <Card key={index} bodyClass="p-4 rounded-md" className="group ">
@@ -62,6 +62,7 @@ const Categories = () => {
                                 </p>
                                 
                             </div>
+                            {Current_user === "superadmin" && (
                             <div style={{position : 'absolute', bottom : '10px', right : '20px'}} >
                             <button 
                             onClick={() => handleDelete(category.subject)}
@@ -69,6 +70,7 @@ const Categories = () => {
                                     <Icon icon="heroicons:trash"  className="text-slate-400 dark:text-slate-400 hover:text-danger-600 dark:hover:text-danger-600" />
                                 </button>
                             </div>
+                            )}
                         </div>
                     </Card>
                 ))}

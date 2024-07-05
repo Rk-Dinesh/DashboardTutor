@@ -39,7 +39,7 @@ const COLUMNS = [
   },
 ];
 
-const ParentTable = () => {
+const ParentTable = ({Current_user}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false)
@@ -173,6 +173,7 @@ const ParentTable = () => {
                       {/* <td className="table-td">{row.original.gender}</td> */}
                       <td className="table-td">{row.original.phone}</td>
                       {/* <td className="table-td">{row.original.email}</td> */}
+                      {Current_user === 'superadmin' && (
                       <td className="table-td">
                         <div className="d-flex justify-around rtl-space-x-reverse">
                           <Tooltip
@@ -207,6 +208,18 @@ const ParentTable = () => {
                           </Tooltip>
                         </div>
                       </td>
+                      )}
+                       {Current_user === 'admin' && (
+                      <td className="table-td">
+                        <div className="d-flex justify-around rtl-space-x-reverse">
+                         <Link   to={`/parents?parent_id=${row.original.parent_id}`}>
+                         <button className="bg-primary-500 px-3 py-1.5 rounded text-base text-white hover:bg-primary-600">
+                            view
+                          </button>
+                         </Link>
+                        </div>
+                      </td>
+                      )}
                     </tr>
                   );
                 })}

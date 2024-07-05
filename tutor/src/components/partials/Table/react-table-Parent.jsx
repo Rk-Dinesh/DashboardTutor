@@ -2,10 +2,10 @@ import React from "react";
 import ParentTable from "./ParentTable";
 
 
-const ParentDetails = () => {
+const ParentDetails = ({Current_user}) => {
   return (
     <div >
-      <ParentTable />
+      <ParentTable Current_user ={Current_user}/>
     </div>
   );
 };

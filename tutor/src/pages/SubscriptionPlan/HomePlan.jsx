@@ -14,7 +14,7 @@ const HomePlan = ({ title }) => {
       <h4 className="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
         {title}
       </h4>
-      <div className="flex space-x-4 justify-end items-center rtl:space-x-reverse ">
+      {/* <div className="flex space-x-4 justify-end items-center rtl:space-x-reverse ">
         <Button
           icon="heroicons-outline:plus"
           text="Create Plan"
@@ -22,7 +22,7 @@ const HomePlan = ({ title }) => {
           iconclassName=" text-lg"
           onClick={() => handleAddBoard()}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

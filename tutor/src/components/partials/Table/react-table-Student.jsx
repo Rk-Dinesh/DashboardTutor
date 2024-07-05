@@ -1,10 +1,10 @@
 import React from "react";
 import StudentTable from "./StudentTable";
 
-const StudentDetails = () => {
+const StudentDetails = ({Current_user}) => {
   return (
     <div >
-      <StudentTable />
+      <StudentTable Current_user ={Current_user}/>
     </div>
   );
 };

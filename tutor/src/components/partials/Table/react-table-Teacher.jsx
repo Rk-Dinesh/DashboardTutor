@@ -2,10 +2,10 @@ import React from "react";
 import TeacherTable from "./TeacherTable";
 
 
-const TeacherDetails = () => {
+const TeacherDetails = ({Current_user}) => {
   return (
     <div >
-      <TeacherTable />
+      <TeacherTable Current_user ={Current_user}/>
     </div>
   );
 };
