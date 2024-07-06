@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import HomePlan from "./HomePlan";
 import Card from "../../components/ui/Card";
 import axios from "axios";
 import { Icon } from "@iconify/react";
-import Lottie from "lottie-react";
+import lottie from "lottie-web/build/player/lottie_light";
 import { API } from "../../host";
-import Modal from "./Modal";  // import the modal component
+import Modal from "./Modal";  // Import the modal component
 
-const Plan = ({Current_user}) => {
+const Plan = ({ Current_user }) => {
   const [plan, setPlan] = useState([]);
   const [animations, setAnimations] = useState({});
   const [modal, setModal] = useState(false);
@@ -23,10 +23,10 @@ const Plan = ({Current_user}) => {
       const planData = planResponse.data.token;
 
       // Fetch animations for each plan
-      const animationPromises = planData.map(plan => 
-        axios.get(`${API}/${plan.planimage}`).then(response => ({
+      const animationPromises = planData.map((plan) =>
+        axios.get(`${API}/${plan.planimage}`).then((response) => ({
           planId: plan.plan_id,
-          animationData: response.data
+          animationData: response.data,
         }))
       );
       const animations = await Promise.all(animationPromises);
@@ -51,17 +51,17 @@ const Plan = ({Current_user}) => {
     try {
       const response = await axios.put(`${API}/updateplans?plan_id=${updatedPlan.plan_id}`, updatedPlan);
       const updatedPlanData = response.data;
-  
+
       // Update the plan state
       setPlan((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.plan_id === updatedPlanData.plan_id? updatedPlanData : plan
+          plan.plan_id === updatedPlanData.plan_id ? updatedPlanData : plan
         )
       );
-  
+
       setModal(false);
       setSelectedPlan(null);
-      fetchData()
+      fetchData();
     } catch (error) {
       console.error("Error updating Plan:", error);
     }
@@ -76,7 +76,7 @@ const Plan = ({Current_user}) => {
             <div className="flex flex-col h-full">
               <div className="flex-1">
                 {animations[plan.plan_id] ? (
-                  <Lottie animationData={animations[plan.plan_id]} loop={true} />
+                  <LottieAnimation animationData={animations[plan.plan_id]} />
                 ) : (
                   <div>Loading animation...</div>
                 )}
@@ -111,17 +111,17 @@ const Plan = ({Current_user}) => {
                 </div>
               </div>
               {Current_user === 'superadmin' && (
-              <div className="flex justify-end">
-                <button
-                  onClick={() => openModal(plan)}
-                  className="bg-slate-100 text-slate-400 p-2 rounded-full hover:bg-green-200 hover:text-green-600"
-                >
-                  <Icon
-                    icon="ic:outline-edit"
-                    className="text-slate-400 dark:text-slate-400 hover:text-green-600 "
-                  />
-                </button>
-              </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => openModal(plan)}
+                    className="bg-slate-100 text-slate-400 p-2 rounded-full hover:bg-green-200 hover:text-green-600"
+                  >
+                    <Icon
+                      icon="ic:outline-edit"
+                      className="text-slate-400 dark:text-slate-400 hover:text-green-600 "
+                    />
+                  </button>
+                </div>
               )}
             </div>
           </Card>
@@ -138,6 +138,26 @@ const Plan = ({Current_user}) => {
       />
     </div>
   );
+};
+
+const LottieAnimation = ({ animationData }) => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const animationInstance = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData,
+    });
+
+    return () => {
+      animationInstance.destroy();
+    };
+  }, [animationData]);
+
+  return <div ref={containerRef} style={{ height: 200, width: 200 }} />;
 };
 
 export default Plan;
