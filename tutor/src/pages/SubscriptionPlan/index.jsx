@@ -74,7 +74,7 @@ const Plan = ({ Current_user }) => {
         {plan.map((plan, index) => (
           <Card key={index} className="group h-full w-full">
             <div className="flex flex-col h-full">
-              <div className="flex-1">
+              <div className="flex justify-center ">
                 {animations[plan.plan_id] ? (
                   <LottieAnimation animationData={animations[plan.plan_id]} />
                 ) : (
