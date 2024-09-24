@@ -3,6 +3,7 @@ import axios from "axios";
 
 import Card from "../../../components/ui/Card";
 import { API } from "../../../host";
+import { toast } from "react-toastify";
 
 function LocationForm({setIsModal,fetchData}) {
 
@@ -22,6 +23,7 @@ function LocationForm({setIsModal,fetchData}) {
       const response = await axios.post(`${API}/location`, formData);
       fetchData();
       setIsModal(false);
+      toast.success('Location Added Successfully')
     } catch (error) {
       console.error("Error:", error);
     }

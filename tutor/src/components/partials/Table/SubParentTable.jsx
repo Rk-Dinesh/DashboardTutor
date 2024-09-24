@@ -18,20 +18,20 @@ const COLUMNS = [
     accessor: "rowIndex",
   },
   {
-    Header: "FIRST NAME",
-    accessor: "firstname",
+    Header: "ID",
+    accessor: "sub_id",
   },
   {
-    Header: "LAST NAME",
-    accessor: "lastname",
+    Header: "PARENT",
+    accessor: "fname",
   },
   {
     Header: "EMAIL",
     accessor: "email",
   },
   {
-    Header: "PHONE",
-    accessor: "phone",
+    Header: "DATE",
+    accessor: "date",
   },
   {
     Header: "ACTION",

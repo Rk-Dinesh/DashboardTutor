@@ -14,6 +14,7 @@ import Tooltip from "../../../components/ui/Tooltip";
 import GlobalFilter from "../../../components/partials/Table/GlobalFilter";
 import Card from "../../../components/ui/Card";
 import StreetForm from "./StreetForm";
+import { toast } from "react-toastify";
 
 const COLUMNS = [
   {
@@ -35,42 +36,16 @@ const COLUMNS = [
   },
 ];
 
-const StreetTable = ({setIsModal,isModal}) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const [refresh, setRefresh] = useState(false)
-
-  useEffect(() => {
-    fetchData();
-  }, [refresh]);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API}/getstreet`);
-
-      if (response.status === 200) {
-        // Add rowIndex to each user object and set it in state
-        const usersWithRowIndex = response.data.reverse().map((user, index) => ({
-          ...user,
-          rowIndex: index + 1,
-        }));
-        setData(usersWithRowIndex);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching Admin data:", error);
-      setLoading(false);
-    }
-  };
-
+const StreetTable = ({setIsModal,isModal,data,fetchData}) => {
+ 
   const handleDelete = async (street_name) => {
     try {
       const response = await axios.delete(
         `${API}/deletestreet?street_name=${street_name}`
       );
-      console.log(response);
-      setRefresh(!refresh);
+      //console.log(response);
+      fetchData()
+      toast.error('Deleted Successfully')
     } catch (error) {
       console.error("Error deleting :", error);
     }

@@ -3,6 +3,7 @@ import Card from "../../components/ui/Card";
 import axios from "axios";
 import { API } from "../../host";
 import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
 
 const Cover = ({ Current_user }) => {
   const [formData, setFormData] = useState({
@@ -54,6 +55,7 @@ const Cover = ({ Current_user }) => {
       fileInputRef.current.value = null;
       fetchData();
       setError(null);
+      toast.success("Cover Image Successfully")
     } catch (error) {
       console.error("Error:", error);
     }
@@ -66,6 +68,7 @@ const Cover = ({ Current_user }) => {
       setBanner((prevBanner) =>
         prevBanner.filter((banner) => banner.banner_id !== banner_id)
       );
+      toast.error('Deleted Successfully')
     } catch (error) {
       console.error("Error deleting Banner:", error);
     }

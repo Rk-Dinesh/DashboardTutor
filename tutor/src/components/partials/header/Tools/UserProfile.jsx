@@ -4,10 +4,9 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link,useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { API } from "../../../../host";
 import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
 
 const UserProfile = ({ token,Current_user}) => {
   const navigate = useNavigate();
@@ -37,6 +36,7 @@ const UserProfile = ({ token,Current_user}) => {
         );
         const responseData = response.data;
         setUserData(responseData);
+        toast.success('Profile Updated Successfully')
       } catch (error) {
         console.log(error);
       }

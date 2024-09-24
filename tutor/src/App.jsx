@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
@@ -66,8 +66,8 @@ function App() {
   }
 
   return (
-    <div>
-      <ToastContainer position="top-right" autoClose={1000} />
+    <>
+    <BrowserRouter>
       <Routes>
         <Route path="" element={<Login setToken={setToken} />} />
         <Route path="/" element={token ? <Layout token={token} Current_user ={Current_user}/> : <Navigate to='/' />}>
@@ -96,7 +96,20 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+     </BrowserRouter>
+     <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+     </>
   );
 }
 

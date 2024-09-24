@@ -7,6 +7,7 @@ import Card from "../../components/ui/Card";
 import axios from "axios";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { API } from "../../host";
+import { toast } from "react-toastify";
 
 const FormValidationSchema = yup.object({
   firstname: yup.string().required("First Name is required"),
@@ -85,6 +86,7 @@ const UpdateAdmin = ({ Current_user }) => {
       {
         Current_user === "admin" && navigate("/dashboard");
       }
+      toast.success('Admin Updated Successfully')
     } catch (error) {
       console.log(error);
     }

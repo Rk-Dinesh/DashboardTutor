@@ -4,6 +4,7 @@ import Card from '../../components/ui/Card'
 import axios from 'axios'
 import { Icon } from '@iconify/react'
 import { API } from '../../host'
+import { toast } from 'react-toastify'
 
 const Categories = ({Current_user}) => {
 
@@ -35,6 +36,7 @@ const Categories = ({Current_user}) => {
             setCategory(prevCategories =>
                 prevCategories.filter(category => category.subject !== subject)
             );
+            toast.error('Category Deleted Successfully')
         } catch (error) {
             console.error('Error deleting category:', error);
         }

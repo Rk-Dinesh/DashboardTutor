@@ -11,6 +11,7 @@ import {
 import GlobalFilter from "./GlobalFilter";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../../host";
+import { toast } from "react-toastify";
 
 const COLUMNS = [
   {
@@ -18,16 +19,20 @@ const COLUMNS = [
     accessor: "rowIndex",
   },
   {
-    Header: "FIRST NAME",
-    accessor: "firstname",
+    Header: "ID",
+    accessor: "parent_id",
   },
   {
-    Header: "LAST NAME",
-    accessor: "lastname",
+    Header: "PARENT ",
+    accessor: "fname",
   },
   {
-    Header: "EMAIL",
-    accessor: "email",
+    Header: "KID NAME ",
+    accessor: "kidname",
+  },
+  {
+    Header: "SUBJECT",
+    accessor: "subject",
   },
   {
     Header: "PHONE",
@@ -75,6 +80,7 @@ const ParentTable = ({Current_user}) => {
       );
       
       setRefresh(!refresh);
+      toast.error("Parent Deleted Successfully")
     } catch (error) {
       console.error("Error deleting :", error);
     }

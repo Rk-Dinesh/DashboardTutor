@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Card from '../../components/ui/Card'
 import { API } from "../../host";
+import { toast } from "react-toastify";
 
 function CategoryForm() {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const handleInputChange = (event) => {
       });
       
   
-     
+     toast.success("Category Added Successfully")
         history.back();
       
     } catch (error) {

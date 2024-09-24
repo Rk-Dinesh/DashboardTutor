@@ -18,12 +18,12 @@ const COLUMNS = [
     accessor: "rowIndex",
   },
   {
-    Header: "FIRST NAME",
-    accessor: "firstname",
+    Header: "ID",
+    accessor: "tutor_id",
   },
   {
-    Header: "LAST NAME",
-    accessor: "lastname",
+    Header: " TEACHER",
+    accessor: "fname",
   },
   {
     Header: "EMAIL",
@@ -73,6 +73,7 @@ const TeacherTable = ({Current_user}) => {
         `${API}/teacherDelete?tutor_id=${tutor_id}`
       );
       setRefresh(!refresh)
+      toast.error('Tutor Deleted Successfully')
     } catch (error) {
       console.error("Error deleting :", error);
     }

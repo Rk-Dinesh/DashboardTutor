@@ -6,7 +6,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import { API } from "../../host";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const Teachers = () => {
   const location = useLocation();

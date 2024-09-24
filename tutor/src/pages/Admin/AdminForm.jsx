@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Card from "../../components/ui/Card";
 import { API } from "../../host";
+import { toast } from "react-toastify";
 
 function AdminForm() {
   const [formData, setFormData] = useState({
@@ -24,7 +25,8 @@ function AdminForm() {
     axios
       .post(`${API}/admin`, formData)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
+        toast.success('Admin Added Successfully')
         history.back();
       })
       .catch((error) => {

@@ -11,11 +11,16 @@ import {
 import GlobalFilter from "./GlobalFilter";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../../host";
+import { toast } from "react-toastify";
 
 const COLUMNS = [
   {
     Header: "#",
     accessor: "rowIndex", // Add a special accessor for the row index
+  },
+  {
+    Header: "ID",
+    accessor: "userid",
   },
   {
     Header: "FIRST NAME",
@@ -75,6 +80,7 @@ const AdminTable = () => {
       );
       console.log(response);
       setRefresh(!refresh);
+      toast.error("Admin Deleted Successfully")
     } catch (error) {
       console.error("Error deleting :", error);
     }

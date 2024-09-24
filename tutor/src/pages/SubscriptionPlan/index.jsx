@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import lottie from "lottie-web/build/player/lottie_light";
 import { API } from "../../host";
 import Modal from "./Modal";  // Import the modal component
+import { toast } from "react-toastify";
 
 const Plan = ({ Current_user }) => {
   const [plan, setPlan] = useState([]);
@@ -62,6 +63,7 @@ const Plan = ({ Current_user }) => {
       setModal(false);
       setSelectedPlan(null);
       fetchData();
+      toast.success('Plan Updated Successfully')
     } catch (error) {
       console.error("Error updating Plan:", error);
     }

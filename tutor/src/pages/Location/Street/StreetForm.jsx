@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 import Card from "../../../components/ui/Card";
 import { API } from "../../../host";
 
@@ -22,6 +22,7 @@ function StreetForm({setIsModal,fetchData}) {
       const response = await axios.post(`${API}/street`, formData);
       fetchData();
       setIsModal(false);
+      toast.success('Street Added Sucessfully')
     } catch (error) {
       console.error("Error:", error);
     }

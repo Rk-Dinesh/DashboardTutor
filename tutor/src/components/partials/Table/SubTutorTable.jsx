@@ -20,21 +20,18 @@ const COLUMNS = [
     accessor: "rowIndex",
   },
   {
-    Header: "FIRST NAME",
-    accessor: "firstname",
+    Header: "ID",
+    accessor: "sub_id",
   },
   {
-    Header: "LAST NAME",
-    accessor: "lastname",
+    Header: "TUTOR",
+    accessor: "fname",
   },
   {
-    Header: "EMAIL",
-    accessor: "email",
+    Header: "DATE",
+    accessor: "date",
   },
-  {
-    Header: "PHONE",
-    accessor: "phone",
-  },
+  
   {
     Header: "ACTION",
     accessor: "actions", // You can add action buttons here

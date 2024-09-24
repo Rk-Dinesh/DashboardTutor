@@ -11,6 +11,7 @@ import {
 import GlobalFilter from "./GlobalFilter";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../../host";
+import { toast } from "react-toastify";
 
 const COLUMNS = [
   {
@@ -18,12 +19,12 @@ const COLUMNS = [
     accessor: "rowIndex",
   },
   {
-    Header: "FIRST NAME",
-    accessor: "firstname",
+    Header: "ID",
+    accessor: "student_id",
   },
   {
-    Header: "LAST NAME",
-    accessor: "lastname",
+    Header: "NAME",
+    accessor: "fname",
   },
   {
     Header: "EMAIL",
@@ -32,6 +33,10 @@ const COLUMNS = [
   {
     Header: "PHONE",
     accessor: "phone",
+  },
+  {
+    Header: "SUBJECT",
+    accessor: "subject",
   },
   {
     Header: "ACTION",
@@ -74,6 +79,7 @@ const StudentTable = ({ Current_user }) => {
       );
 
       setRefresh(!refresh);
+      toast.error('Student Deleted Successfully')
     } catch (error) {
       console.error("Error deleting :", error);
     }
