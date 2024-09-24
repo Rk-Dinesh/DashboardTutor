@@ -58,6 +58,18 @@ export const menuItems = [
     isHide: true,
     icon: "ion:image-outline",
     link: "cover"
+  },
+  {
+    title: "Location",
+    isHide: true,
+    icon: "ion:image-outline",
+    link: "location"
+  },
+  {
+    title: "Street",
+    isHide: true,
+    icon: "ion:image-outline",
+    link: "street"
   }
 ];
 

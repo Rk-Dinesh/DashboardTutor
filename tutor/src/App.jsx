@@ -28,6 +28,8 @@ import Subscribers from "./pages/Subscribers";
 import Invoice from "./pages/Razorpay/invoice";
 import NotFound from "./404";
 import Cover from "./pages/Coverimage";
+import Location from "./pages/Location/Locality";
+import Street from "./pages/Location/Street";
 
 
 
@@ -45,6 +47,7 @@ function App() {
           const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
           const responseData = response.data;
           setUserData(responseData.role);
+          localStorage.setItem('role', responseData.role);
         } catch (error) {
           console.log(error);
         }
@@ -88,6 +91,8 @@ function App() {
           <Route path="invoice" element={<Invoice />} />
           <Route path="profile" element={<UserProfile token={token} Current_user ={Current_user} />} />
           <Route path="cover" element={<Cover Current_user ={Current_user}/>} />
+          <Route path="location" element={<Location/>} />
+          <Route path="street" element={<Street/>} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

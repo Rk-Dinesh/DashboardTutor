@@ -70,6 +70,7 @@ const Profile = ({token}) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     dispatch(logOut()); 
     navigate("/"); 
   };
