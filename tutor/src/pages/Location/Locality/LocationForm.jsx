@@ -17,7 +17,7 @@ function LocationForm({setIsModal,fetchData}) {
     event.preventDefault(); 
     const formData = {
       location_name: location,
-      createdby: localStorage.getItem('role') || 'admin',
+      createdby:  'admin',
     };
     try {
       const response = await axios.post(`${API}/location`, formData);

@@ -16,7 +16,7 @@ function StreetForm({setIsModal,fetchData}) {
     event.preventDefault(); 
     const formData = {
       street_name: location,
-      createdby: localStorage.getItem('role') || 'admin',
+      createdby:  'admin',
     };
     try {
       const response = await axios.post(`${API}/street`, formData);

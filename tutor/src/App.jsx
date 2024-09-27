@@ -36,30 +36,31 @@ import Street from "./pages/Location/Street";
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const decodedToken = token ? jwtDecode(token) : null;
-  const [userData, setUserData] = useState({role : "superadmin"});
-
+  const [userData, setUserData] = useState({ role: "superadmin" });
+  
   useEffect(() => {
     if (decodedToken) {
       const decodedEmail = decodedToken.email;
-
+  
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
           const responseData = response.data;
-          setUserData(responseData.role);
-          localStorage.setItem('role', responseData.role || 'superadmin');
+          setUserData({ role: responseData.role });
         } catch (error) {
-          console.log(error);
+          console.error(error);
+          // Display an error message to the user
+          // or retry the request
         }
       };
-
+  
       fetchUserData();
     }
   }, [decodedToken]);
-
+  
   const Current_user = userData;
   console.log("user", Current_user);
-
+  
   if (!token) {
     // Handle the case where token is null
     return <Login setToken={setToken} />;
