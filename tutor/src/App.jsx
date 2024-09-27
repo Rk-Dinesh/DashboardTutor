@@ -47,7 +47,7 @@ function App() {
           const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
           const responseData = response.data;
           setUserData(responseData.role);
-          localStorage.setItem('role', responseData.role);
+          localStorage.setItem('role', responseData.role || 'superadmin');
         } catch (error) {
           console.log(error);
         }
