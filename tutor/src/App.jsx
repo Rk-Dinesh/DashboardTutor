@@ -36,7 +36,7 @@ import Street from "./pages/Location/Street";
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const decodedToken = token ? jwtDecode(token) : null;
-  const [userData, setUserData] = useState({role : ""});
+  const [userData, setUserData] = useState({role : "superadmin"});
 
   useEffect(() => {
     if (decodedToken) {
