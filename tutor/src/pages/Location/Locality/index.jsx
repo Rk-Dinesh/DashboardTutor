@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 
-const Location = () => {
+const Location = ({Current_user}) => {
 
   const [isModal, setIsModal] = useState(false);
   const [file, setFile] = useState(null);
@@ -89,7 +89,7 @@ const Location = () => {
     <div>
       <Home title="Location" setIsModal={setIsModal} handleFileChange={handleFileChange} handleButtonClick={handleButtonClick} buttonText={buttonText}/>
       <div className="lg:col-span-12 col-span-12">
-          <LocationTable setIsModal={setIsModal} isModal={isModal} data={data} fetchData={fetchData}/>
+          <LocationTable setIsModal={setIsModal} isModal={isModal} data={data} fetchData={fetchData} Current_user={Current_user}/>
       </div>
     </div>
   

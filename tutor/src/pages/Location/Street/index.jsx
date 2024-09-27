@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 
-const Street = () => {
+const Street = ({Current_user}) => {
 
   const [isModal, setIsModal] = useState(false);
   const [file, setFile] = useState(null);
@@ -90,7 +90,7 @@ const Street = () => {
       <Home title="Street" setIsModal={setIsModal} handleFileChange={handleFileChange} handleButtonClick={handleButtonClick} buttonText={buttonText}/>
       <div className="lg:col-span-12 col-span-12">
        
-          <StreetTable setIsModal={setIsModal} isModal={isModal} data={data} fetchData={fetchData}/>
+          <StreetTable setIsModal={setIsModal} isModal={isModal} data={data} fetchData={fetchData} Current_user={Current_user}/>
       
       </div>
     </div>

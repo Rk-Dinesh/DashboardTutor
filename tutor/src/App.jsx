@@ -91,8 +91,8 @@ function App() {
           <Route path="invoice" element={<Invoice />} />
           <Route path="profile" element={<UserProfile token={token} Current_user ={Current_user} />} />
           <Route path="cover" element={<Cover Current_user ={Current_user}/>} />
-          <Route path="location" element={<Location/>} />
-          <Route path="street" element={<Street/>} />
+          <Route path="location" element={<Location Current_user ={Current_user}/>} />
+          <Route path="street" element={<Street Current_user ={Current_user}/>} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

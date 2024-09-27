@@ -36,7 +36,7 @@ const COLUMNS = [
   },
 ];
 
-const StreetTable = ({setIsModal,isModal,data,fetchData}) => {
+const StreetTable = ({setIsModal,isModal,data,fetchData,Current_user}) => {
  
   const handleDelete = async (street_name) => {
     try {
@@ -117,7 +117,9 @@ const StreetTable = ({setIsModal,isModal,data,fetchData}) => {
                   <th className=" table-th text-center">Street</th>
                   <th className=" table-th text-center">Created by</th>
                   <th className=" table-th text-center">Date</th>
+                  {Current_user === 'superadmin' && (
                   <th className=" table-th text-center">Action</th>
+                )}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
@@ -129,6 +131,7 @@ const StreetTable = ({setIsModal,isModal,data,fetchData}) => {
                       <td className="table-td text-center">{row.original.street_name}</td>
                       <td className="table-td text-center">{row.original.createdby}</td>
                       <td className="table-td text-center">{formatDate1(row.original.createdAt)}</td>
+                      {Current_user === 'superadmin' && (
                       <td className="table-td">
                         <div className="d-flex justify-around rtl-space-x-reverse">
                     
@@ -149,6 +152,7 @@ const StreetTable = ({setIsModal,isModal,data,fetchData}) => {
                           </Tooltip>
                         </div>
                       </td>
+                      )}
                     </tr>
                   );
                 })}
