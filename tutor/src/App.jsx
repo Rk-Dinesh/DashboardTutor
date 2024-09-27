@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from "react";
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
@@ -36,39 +36,37 @@ import Street from "./pages/Location/Street";
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const decodedToken = token ? jwtDecode(token) : null;
-  const [userData, setUserData] = useState({ role: "superadmin" });
-  
+  const [userData, setUserData] = useState({role : ""});
+
   useEffect(() => {
     if (decodedToken) {
       const decodedEmail = decodedToken.email;
-  
+
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`${API}/getemail?email=${decodedEmail}`);
           const responseData = response.data;
-          setUserData({ role: responseData.role });
+          setUserData(responseData.role);
         } catch (error) {
-          console.error(error);
-          // Display an error message to the user
-          // or retry the request
+          console.log(error);
         }
       };
-  
+
       fetchUserData();
     }
   }, [decodedToken]);
-  
+
   const Current_user = userData;
   console.log("user", Current_user);
-  
+
   if (!token) {
     // Handle the case where token is null
     return <Login setToken={setToken} />;
   }
 
   return (
-    <>
-    <BrowserRouter>
+    <div>
+      <ToastContainer position="top-right" autoClose={1000} />
       <Routes>
         <Route path="" element={<Login setToken={setToken} />} />
         <Route path="/" element={token ? <Layout token={token} Current_user ={Current_user}/> : <Navigate to='/' />}>
@@ -92,25 +90,12 @@ function App() {
           <Route path="invoice" element={<Invoice />} />
           <Route path="profile" element={<UserProfile token={token} Current_user ={Current_user} />} />
           <Route path="cover" element={<Cover Current_user ={Current_user}/>} />
-          <Route path="location" element={<Location Current_user ={Current_user}/>} />
-          <Route path="street" element={<Street Current_user ={Current_user}/>} />
+         <Route path="location" element={<Location Current_user ={Current_user}/>}/>
+         <Route path="street" element={<Street Current_user ={Current_user}/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-     </BrowserRouter>
-     <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-     </>
+    </div>
   );
 }
 
