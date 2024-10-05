@@ -78,7 +78,7 @@ const AdminTable = () => {
       const response = await axios.delete(
         `${API}/deleteadmin?userid=${userid}`
       );
-      console.log(response);
+      //console.log(response);
       setRefresh(!refresh);
       toast.error("Admin Deleted Successfully")
     } catch (error) {

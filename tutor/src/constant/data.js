@@ -59,12 +59,7 @@ export const menuItems = [
     icon: "ion:image-outline",
     link: "cover"
   },
-  {
-    title: "Location",
-    isHide: true,
-    icon: "ion:location-outline",
-    link: "location"
-  },
+ 
   {
     title: "Street",
     isHide: true,

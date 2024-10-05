@@ -13,6 +13,7 @@ function AdminForm() {
     role: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -21,16 +22,19 @@ function AdminForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
 
     axios
       .post(`${API}/admin`, formData)
       .then((response) => {
         //console.log(response.data);
-        toast.success('Admin Added Successfully')
+        toast.success("Admin Added Successfully");
+        setLoading(false);
         history.back();
       })
       .catch((error) => {
         console.error("Error:", error);
+        setLoading(false);
       });
   };
 
@@ -134,8 +138,14 @@ function AdminForm() {
                 </div>
 
                 <div className="ltr:text-right rtl:text-left">
-                  <button className="btn btn-dark text-center" type="submit">
-                    ADD
+                  <button
+                    className={`btn btn-dark text-center ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Adding..." : "ADD"}
                   </button>
                 </div>
               </form>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Card from '../../components/ui/Card'
+import Card from '../../components/ui/Card';
 import { API } from "../../host";
 import { toast } from "react-toastify";
 
@@ -9,35 +9,38 @@ function CategoryForm() {
     subject: "",
     categoryimage: null // Changed to null for file type input
   });
+  const [loading, setLoading] = useState(false); // Loading state
 
-const handleInputChange = (event) => {
+  const handleInputChange = (event) => {
     if (event.target.name === "categoryimage") {
       setFormData({ ...formData, categoryimage: event.target.files[0] });
     } else {
       setFormData({ ...formData, [event.target.name]: event.target.value });
     }
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+    setLoading(true); // Start loading when submitting the form
+
     const formDataToSend = new FormData();
     formDataToSend.append("subject", formData.subject);
     formDataToSend.append("categoryimage", formData.categoryimage);
-  
+
     try {
       const response = await axios.post(`${API}/categories`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      
-  
-     toast.success("Category Added Successfully")
-        history.back();
-      
+
+      toast.success("Category Added Successfully");
+      setLoading(false); // Stop loading
+      history.back();
+
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false); // Stop loading on error
     }
   };
 
@@ -51,7 +54,7 @@ const handleInputChange = (event) => {
                 {/* Subject input */}
                 <div>
                   <label htmlFor="subject" className="capitalize form-label">
-                    <b>Subject </b>
+                    <b>Subject</b>
                   </label>
                   <input
                     type="text"
@@ -63,7 +66,6 @@ const handleInputChange = (event) => {
                     onChange={handleInputChange}
                   />
                 </div>
-                
 
                 {/* Image input */}
                 <div>
@@ -82,8 +84,12 @@ const handleInputChange = (event) => {
 
                 {/* Submit button */}
                 <div className="ltr:text-right rtl:text-left">
-                  <button className="btn btn-dark text-center" type="submit">
-                    ADD
+                  <button
+                    className={`btn btn-dark text-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    type="submit"
+                    disabled={loading} // Disable button while loading
+                  >
+                    {loading ? "Adding..." : "ADD"} {/* Change button text while loading */}
                   </button>
                 </div>
               </form>

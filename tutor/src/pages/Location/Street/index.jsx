@@ -4,7 +4,10 @@ import StreetTable from "./StreetTable";
 import { API } from "../../../host";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Template from "../../../components/ui/Template";
 
+const csvData=`street_name,createdby
+street,admin`;
 
 const Street = ({Current_user}) => {
 
@@ -84,15 +87,32 @@ const Street = ({Current_user}) => {
       console.log(error);
     }
   };
+
+
+  const downloadCSV = (csvData) => {
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download =  "bulkupload_template.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  
+  const handleDownload = () => {
+    downloadCSV(csvData);
+  };
+
   
   return (
     <div>
       <Home title="Street" setIsModal={setIsModal} handleFileChange={handleFileChange} handleButtonClick={handleButtonClick} buttonText={buttonText}/>
-      <div className="lg:col-span-12 col-span-12">
+      <div className="lg:col-span-12 col-span-12 mb-3">
        
           <StreetTable setIsModal={setIsModal} isModal={isModal} data={data} fetchData={fetchData} Current_user={Current_user}/>
       
       </div>
+      <Template handleDownload={handleDownload}/>
     </div>
   );
 };

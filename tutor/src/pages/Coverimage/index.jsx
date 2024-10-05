@@ -13,6 +13,7 @@ const Cover = ({ Current_user }) => {
   const [banner, setBanner] = useState([]);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(false); // Track loading state
 
   useEffect(() => {
     fetchData();
@@ -36,11 +37,7 @@ const Cover = ({ Current_user }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (banner.length >= 5) {
-      setError("Limit exceed!");
-      return;
-    }
-
+    setLoading(true); // Start loading
     const formDataToSend = new FormData();
     formDataToSend.append("image", formData.image);
 
@@ -53,11 +50,13 @@ const Cover = ({ Current_user }) => {
 
       setFormData({ image: null });
       fileInputRef.current.value = null;
+      toast.success("Cover Image Successfully");
+      setLoading(false); // Stop loading
       fetchData();
       setError(null);
-      toast.success("Cover Image Successfully")
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false); // Stop loading on error
     }
   };
 
@@ -68,7 +67,7 @@ const Cover = ({ Current_user }) => {
       setBanner((prevBanner) =>
         prevBanner.filter((banner) => banner.banner_id !== banner_id)
       );
-      toast.error('Deleted Successfully')
+      toast.error("Deleted Successfully");
     } catch (error) {
       console.error("Error deleting Banner:", error);
     }
@@ -84,7 +83,7 @@ const Cover = ({ Current_user }) => {
               onSubmit={handleSubmit}
             >
               <div className="w-3/4">
-                <label htmlFor="image" className="capitalize form-label ">
+                <label htmlFor="image" className="capitalize form-label">
                   <b>Banner Image</b>
                 </label>
                 <input
@@ -99,23 +98,18 @@ const Cover = ({ Current_user }) => {
               </div>
 
               <button
-                className="bg-dark text-white py-1.5 px-4 text-base rounded"
+                className={`bg-dark text-white py-1.5 px-4 text-base rounded ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 type="submit"
-                disabled={banner.length >= 5}
+                disabled={loading} // Disable button while loading
               >
-                Save
+                {loading ? "Saving..." : "Save"}
               </button>
             </form>
             {error && <div className="text-red-500 mt-2">{error}</div>}
-
-            {banner.length >= 5 && (
-              <p className="text-center mt-3 text-xl  text-red-600 font-extralight mb-1">
-                Adding banner limit exceeds !!!
-              </p>
-            )}
           </div>
         </Card>
       )}
+
       <div className="mt-3 grid grid-cols-12 gap-2">
         {banner.map((banners, index) => (
           <div className="col-span-4" key={index}>
@@ -125,20 +119,20 @@ const Cover = ({ Current_user }) => {
                 alt="Image"
                 className="w-full h-full object-contain relative"
               />
-              {Current_user === 'superadmin' && (
-              <div
-                style={{ position: "absolute", bottom: "10px", right: "20px" }}
-              >
-                <button
-                  onClick={() => handleDelete(banners.banner_id)}
-                  className="bg-slate-100 text-slate-400 p-2.5 mb-1.5 rounded-full hover:bg-red-200 hover:text-red-600"
+              {Current_user === "superadmin" && (
+                <div
+                  style={{ position: "absolute", bottom: "10px", right: "20px" }}
                 >
-                  <Icon
-                    icon="heroicons:trash"
-                    className="text-slate-400 dark:text-slate-400 hover:text-danger-600 dark:hover:text-danger-600"
-                  />
-                </button>
-              </div>
+                  <button
+                    onClick={() => handleDelete(banners.banner_id)}
+                    className="bg-slate-100 text-slate-400 p-2.5 mb-1.5 rounded-full hover:bg-red-200 hover:text-red-600"
+                  >
+                    <Icon
+                      icon="heroicons:trash"
+                      className="text-slate-400 dark:text-slate-400 hover:text-danger-600 dark:hover:text-danger-600"
+                    />
+                  </button>
+                </div>
               )}
             </Card>
           </div>
