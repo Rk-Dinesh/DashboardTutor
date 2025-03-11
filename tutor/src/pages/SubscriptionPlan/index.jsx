@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import HomePlan from "./HomePlan";
 import Card from "../../components/ui/Card";
 import axios from "axios";
 import { Icon } from "@iconify/react";
-import lottie from "lottie-web/build/player/lottie_light";
 import { API } from "../../host";
 import Modal from "./Modal";  // Import the modal component
 import { toast } from "react-toastify";
 
 const Plan = ({ Current_user }) => {
   const [plan, setPlan] = useState([]);
-  const [animations, setAnimations] = useState({});
   const [modal, setModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
@@ -23,21 +21,7 @@ const Plan = ({ Current_user }) => {
       const planResponse = await axios.get(`${API}/getplans`);
       const planData = planResponse.data.token;
 
-      // Fetch animations for each plan
-      const animationPromises = planData.map((plan) =>
-        axios.get(`${API}/${plan.planimage}`).then((response) => ({
-          planId: plan.plan_id,
-          animationData: response.data,
-        }))
-      );
-      const animations = await Promise.all(animationPromises);
-      const animationsMap = animations.reduce((acc, anim) => {
-        acc[anim.planId] = anim.animationData;
-        return acc;
-      }, {});
-
       setPlan(planData);
-      setAnimations(animationsMap);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -63,7 +47,7 @@ const Plan = ({ Current_user }) => {
       setModal(false);
       setSelectedPlan(null);
       fetchData();
-      toast.success('Plan Updated Successfully')
+      toast.success('Plan Updated Successfully');
     } catch (error) {
       console.error("Error updating Plan:", error);
     }
@@ -76,11 +60,15 @@ const Plan = ({ Current_user }) => {
         {plan.map((plan, index) => (
           <Card key={index} className="group h-full w-full">
             <div className="flex flex-col h-full">
-              <div className="flex justify-center ">
-                {animations[plan.plan_id] ? (
-                  <LottieAnimation animationData={animations[plan.plan_id]} />
+              <div className="flex justify-center">
+                {plan.planimage ? (
+                  <img
+                    src={`${API}/${plan.planimage}`} // Assuming API is the base URL
+                    alt={plan.plan_name}
+                    className="h-48 w-48 object-cover"
+                  />
                 ) : (
-                  <div>Loading animation...</div>
+                  <div>Loading image...</div>
                 )}
               </div>
               <div className="p-2 flex-1 mt-6">
@@ -140,26 +128,6 @@ const Plan = ({ Current_user }) => {
       />
     </div>
   );
-};
-
-const LottieAnimation = ({ animationData }) => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const animationInstance = lottie.loadAnimation({
-      container: containerRef.current,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      animationData,
-    });
-
-    return () => {
-      animationInstance.destroy();
-    };
-  }, [animationData]);
-
-  return <div ref={containerRef} style={{ height: 200, width: 200 }} />;
 };
 
 export default Plan;

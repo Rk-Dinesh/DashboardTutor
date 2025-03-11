@@ -1,5 +1,5 @@
 
-export const API = 'http://13.54.14.73:3000';
+export const API = 'https://protutor-backend-rfw3.onrender.com';
 
 export function formatDate1(isoDate) {
     const date = new Date(isoDate);
